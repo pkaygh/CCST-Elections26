@@ -229,7 +229,16 @@
   <div id="msg" class="auth-message"></div>
 </div>
 
-<script src="config.js"></script>
+<script>
+  // Inline config (no external file needed)
+  const CONFIG = {
+    API_URL: 'https://script.google.com/macros/s/AKfycbxLi1e_sS-JTmDR8N51oAjUJQs7PchAmL-4Ub-EYJhIGTBPYQvlzl6mXVOGpc2cIZC6/exec',
+    CORS_PROXY: 'https://corsproxy.io/?',
+    TIMEOUT_MS: 15000,
+    DEBUG: true
+  };
+  console.log('✅ Config loaded inline! API_URL:', CONFIG.API_URL);
+</script>
 <script src="api.js"></script>
 <script>
   let ballotConfig = {};
