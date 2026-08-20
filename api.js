@@ -144,6 +144,16 @@
     return callApi('submitVotesWithVerification', { voterName: voterName, studentId: studentId, selections: selections, votedNone: votedNone, voterRowIndex: voterRowIndex }, 'POST');
   }
 
+  async function getStudentPIN(studentId) {
+    return callApi('getStudentPIN', { studentId: studentId }, 'POST');
+  }
+  async function resetStudentPIN(studentId) {
+    return callApi('resetStudentPIN', { studentId: studentId }, 'POST');
+  }
+  async function printAllPINs() {
+    return callApi('printAllPINs', {}, 'POST');
+  }
+
   async function pingApi() {
     const base = (typeof CONFIG !== 'undefined' && CONFIG !== null && CONFIG.API_URL) ? CONFIG.API_URL : null;
     const out = { apiUrl: base, apiUrlLooksValid: looksLikeAppsScriptUrl(base), pageProtocol: window.location.protocol, isFileProtocol: isFileProtocol(), corsProxyConfigured: !!getCfg('CORS_PROXY'), strategies: {} };
@@ -172,4 +182,7 @@
   window.pingApi                = pingApi;
   window.verifyVoter            = verifyVoter;
   window.submitVotesWithVerification = submitVotesWithVerification;
+  window.getStudentPIN          = getStudentPIN;
+  window.resetStudentPIN        = resetStudentPIN;
+  window.printAllPINs           = printAllPINs;
 })();

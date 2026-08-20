@@ -127,6 +127,41 @@
       </div>
       <div id="candidateList" style="color: rgba(255,255,255,0.6);">Loading candidates...</div>
     </div>
+
+    <!-- PIN MANAGEMENT -->
+    <div class="hotel-card">
+      <div class="card-title">
+        <i class="bi bi-key"></i> PIN Management
+        <span class="gold-badge ms-auto"><i class="bi bi-lock me-1"></i>Secure</span>
+      </div>
+
+      <div class="mb-3">
+        <button class="btn-hotel-primary" onclick="generatePINs()" id="genPinBtn" style="padding:0.5rem 1rem;font-size:0.9rem;">
+          <i class="bi bi-shuffle me-2"></i>Generate PINs for All Students
+        </button>
+        <button class="btn-hotel-secondary mt-2" onclick="printPINs()" id="printPinBtn" style="padding:0.5rem 1rem;font-size:0.9rem;width:auto;display:inline-block;">
+          <i class="bi bi-printer me-2"></i>Print All PINs
+        </button>
+      </div>
+
+      <div class="row g-3">
+        <div class="col-md-8">
+          <label class="hotel-label"><i class="bi bi-card-text me-1"></i> Student ID</label>
+          <input type="text" id="pinStudentId" class="form-control hotel-input" placeholder="e.g. CCST/RM/20/100">
+        </div>
+        <div class="col-md-4 d-flex align-items-end gap-2">
+          <button class="btn-hotel-primary" onclick="lookupStudentPIN()" id="lookupPinBtn" style="padding:0.5rem 1rem;font-size:0.9rem;flex:1;">
+            <i class="bi bi-search me-2"></i>Get PIN
+          </button>
+          <button class="btn-hotel-warning" onclick="doResetPIN()" id="resetPinBtn" style="padding:0.5rem 1rem;font-size:0.9rem;flex:1;">
+            <i class="bi bi-arrow-repeat me-2"></i>Reset
+          </button>
+        </div>
+      </div>
+
+      <div id="pinResult" class="auth-message mt-3"></div>
+      <pre id="pinPrintOutput" style="background:rgba(0,0,0,0.3);color:#ffd;padding:1rem;border-radius:8px;margin-top:1rem;font-size:0.8rem;max-height:300px;overflow:auto;display:none;"></pre>
+    </div>
   </div>
 </div>
 
@@ -301,6 +336,103 @@
     }
   }
   window.removePosition = removePosition;
+
+  // ----- PIN MANAGEMENT -----
+  async function generatePINs() {
+    const btn = document.getElementById('genPinBtn');
+    const out = document.getElementById('pinResult');
+    if (!confirm('Generate unique 6-digit PINs for all students who do not have one?')) return;
+    btn.disabled = true;
+    btn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Generating...';
+    out.innerHTML = '';
+    try {
+      const result = await callApi('generateVoterPINs', {}, 'POST');
+      out.innerHTML = result.success
+        ? '<i class="bi bi-check-circle-fill me-2" style="color:#2ecc71;"></i>' + (result.message || result.data || 'Done')
+        : '<i class="bi bi-exclamation-triangle-fill me-2" style="color:#e74c3c;"></i>' + (result.message || 'Failed');
+      out.className = 'auth-message ' + (result.success ? 'success-message' : '');
+    } catch (e) {
+      out.innerHTML = '<i class="bi bi-exclamation-triangle-fill me-2" style="color:#e74c3c;"></i>' + (e.message || e);
+      out.className = 'auth-message';
+    }
+    btn.disabled = false;
+    btn.innerHTML = '<i class="bi bi-shuffle me-2"></i>Generate PINs for All Students';
+  }
+  window.generatePINs = generatePINs;
+
+  async function lookupStudentPIN() {
+    const studentId = document.getElementById('pinStudentId').value.trim();
+    const out = document.getElementById('pinResult');
+    const printOut = document.getElementById('pinPrintOutput');
+    printOut.style.display = 'none';
+    if (!studentId) { out.innerHTML = '<i class="bi bi-exclamation-triangle-fill me-2" style="color:#f39c12;"></i>Enter a Student ID.'; out.className = 'auth-message'; return; }
+    out.innerHTML = '<span style="color:rgba(255,255,255,0.5);">Looking up...</span>';
+    try {
+      const result = await getStudentPIN(studentId);
+      if (result && result.success) {
+        out.innerHTML = '<div style="background:rgba(46,204,113,0.08);border:1px solid rgba(46,204,113,0.2);border-radius:12px;padding:1rem;">' +
+          '<div style="color:rgba(255,255,255,0.8);font-size:0.9rem;"><strong style="color:#fff;">Name:</strong> ' + escapeHTML(result.name) + '</div>' +
+          '<div style="color:rgba(255,255,255,0.8);font-size:0.9rem;"><strong style="color:#fff;">Program:</strong> ' + escapeHTML(result.program) + '</div>' +
+          '<div style="color:rgba(255,255,255,0.8);font-size:0.9rem;"><strong style="color:#fff;">Email:</strong> ' + escapeHTML(result.email) + '</div>' +
+          '<div style="font-size:1.4rem;font-weight:bold;color:var(--hotel-gold);margin-top:0.5rem;"><i class="bi bi-key me-2"></i>PIN: ' + (result.pin || 'Not set') + '</div>' +
+          '</div>';
+        out.className = 'auth-message success-message';
+      } else {
+        out.innerHTML = '<i class="bi bi-exclamation-triangle-fill me-2" style="color:#e74c3c;"></i>' + (result && result.message || 'Student not found.');
+        out.className = 'auth-message';
+      }
+    } catch (e) {
+      out.innerHTML = '<i class="bi bi-exclamation-triangle-fill me-2" style="color:#e74c3c;"></i>' + (e.message || e);
+      out.className = 'auth-message';
+    }
+  }
+  window.lookupStudentPIN = lookupStudentPIN;
+
+  async function doResetPIN() {
+    const studentId = document.getElementById('pinStudentId').value.trim();
+    const out = document.getElementById('pinResult');
+    const printOut = document.getElementById('pinPrintOutput');
+    printOut.style.display = 'none';
+    if (!studentId) { out.innerHTML = '<i class="bi bi-exclamation-triangle-fill me-2" style="color:#f39c12;"></i>Enter a Student ID.'; out.className = 'auth-message'; return; }
+    if (!confirm('Reset PIN for "' + studentId + '"? A new random PIN will be generated.')) return;
+    out.innerHTML = '<span style="color:rgba(255,255,255,0.5);">Resetting...</span>';
+    try {
+      const result = await resetStudentPIN(studentId);
+      if (result && result.success) {
+        out.innerHTML = '<i class="bi bi-check-circle-fill me-2" style="color:#2ecc71;"></i>' + (result.message || 'PIN reset.') + '<div style="font-size:1.4rem;font-weight:bold;color:var(--hotel-gold);margin-top:0.5rem;"><i class="bi bi-key me-2"></i>New PIN: ' + result.pin + '</div>';
+        out.className = 'auth-message success-message';
+      } else {
+        out.innerHTML = '<i class="bi bi-exclamation-triangle-fill me-2" style="color:#e74c3c;"></i>' + (result && result.message || 'Reset failed.');
+        out.className = 'auth-message';
+      }
+    } catch (e) {
+      out.innerHTML = '<i class="bi bi-exclamation-triangle-fill me-2" style="color:#e74c3c;"></i>' + (e.message || e);
+      out.className = 'auth-message';
+    }
+  }
+  window.doResetPIN = doResetPIN;
+
+  async function printPINs() {
+    const out = document.getElementById('pinResult');
+    const printOut = document.getElementById('pinPrintOutput');
+    out.innerHTML = '<span style="color:rgba(255,255,255,0.5);">Fetching...</span>';
+    try {
+      const result = await printAllPINs();
+      if (result && result.success && result.data) {
+        printOut.textContent = result.data;
+        printOut.style.display = 'block';
+        out.innerHTML = '<i class="bi bi-check-circle-fill me-2" style="color:#2ecc71;"></i>PIN list loaded below. Copy and paste to share individually.';
+        out.className = 'auth-message success-message';
+      } else {
+        out.innerHTML = '<i class="bi bi-exclamation-triangle-fill me-2" style="color:#e74c3c;"></i>' + (result && result.message || 'Failed to load PINs.');
+        out.className = 'auth-message';
+      }
+    } catch (e) {
+      out.innerHTML = '<i class="bi bi-exclamation-triangle-fill me-2" style="color:#e74c3c;"></i>' + (e.message || e);
+      out.className = 'auth-message';
+    }
+  }
+  window.printPINs = printPINs;
 </script>
 </body>
 </html>
