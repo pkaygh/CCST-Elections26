@@ -32,7 +32,7 @@
 
   // ---- Helpers --------------------------------------------------------
   function getCfg(key) {
-    if (typeof window.CONFIG !== 'undefined' && CONFIG[key] !== undefined) return CONFIG[key];
+    if (typeof CONFIG !== 'undefined' && CONFIG !== null && CONFIG[key] !== undefined) return CONFIG[key];
     return DEFAULTS[key];
   }
 
@@ -132,8 +132,8 @@
     const isGet = method === 'GET';
 
     // Validate config
-    if (typeof window.CONFIG === 'undefined' || !CONFIG.API_URL) {
-      return { success: false, message: 'config.js failed to load — CONFIG.API_URL is missing. Make sure config.js is in the same folder as this file.' };
+    if (typeof CONFIG === 'undefined' || CONFIG === null || !CONFIG.API_URL) {
+      return { success: false, message: 'CONFIG.API_URL is missing. Make sure the CONFIG block is loaded before api.js (check that the inline <script> with CONFIG appears above <script src=\'api.js\'>).' };
     }
     if (!looksLikeAppsScriptUrl(CONFIG.API_URL)) {
       return { success: false, message: 'CONFIG.API_URL is not a Google Apps Script URL. Current value: ' + CONFIG.API_URL };
@@ -238,7 +238,7 @@
 
   // ---- Diagnostics ----------------------------------------------------
   async function pingApi() {
-    const base = (typeof window.CONFIG !== 'undefined' && CONFIG.API_URL) ? CONFIG.API_URL : null;
+    const base = (typeof CONFIG !== 'undefined' && CONFIG !== null && CONFIG.API_URL) ? CONFIG.API_URL : null;
     const out = {
       apiUrl: base,
       apiUrlLooksValid: looksLikeAppsScriptUrl(base),
