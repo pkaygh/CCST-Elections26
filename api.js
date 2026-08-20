@@ -1,31 +1,43 @@
-// api.js - Handles all communication with the Apps Script backend
+// api.js - Updated for your new backend
 
 /**
- * Make a POST request to the Apps Script API
+ * Make a request to the Apps Script API
+ * Uses GET for reading, POST for writing
  */
-async function callApi(action, data = {}) {
+async function callApi(action, data = {}, method = 'POST') {
   try {
-    const payload = {
-      action: action,
-      ...data
-    };
-    
-    const response = await fetch(CONFIG.API_URL, {
-      method: 'POST',
+    let url = CONFIG.API_URL;
+    let options = {
+      method: method,
       headers: {
         'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload)
-    });
+      }
+    };
     
-    // Check if response is OK
+    if (method === 'GET') {
+      // For GET requests, append action to URL
+      url += `?action=${encodeURIComponent(action)}`;
+      // If there are additional params, add them as query string
+      if (data && Object.keys(data).length > 0) {
+        const params = new URLSearchParams(data);
+        url += `&${params.toString()}`;
+      }
+    } else {
+      // For POST requests, send data in body
+      options.body = JSON.stringify({
+        action: action,
+        ...data
+      });
+    }
+    
+    const response = await fetch(url, options);
+    
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     
     const text = await response.text();
     
-    // Check if we got valid JSON
     try {
       const result = JSON.parse(text);
       return result;
@@ -40,10 +52,10 @@ async function callApi(action, data = {}) {
 }
 
 // ============================================
-// SPECIFIC API FUNCTIONS
+// SPECIFIC API FUNCTIONS - Using GET when possible
 // ============================================
 
-// Admin Functions
+// Admin Functions (POST - require password)
 async function checkAdminPassword(password) {
   return await callApi('checkAdminPassword', { password });
 }
@@ -68,16 +80,18 @@ async function deletePosition(adminPassword, positionName) {
   return await callApi('deletePosition', { adminPassword, positionName });
 }
 
-// Voting Functions
+// Voting Functions (GET for reading, POST for writing)
 async function getBallotData() {
-  return await callApi('getBallotData');
+  // Use GET for better performance
+  return await callApi('getBallotData', {}, 'GET');
 }
 
 async function submitVotes(voterName, studentId, selections, votedNone) {
   return await callApi('submitVotes', { voterName, studentId, selections, votedNone });
 }
 
-// Results Functions
+// Results Functions (GET for reading)
 async function getRealtimeTally() {
-  return await callApi('getRealtimeTally');
+  // Use GET for better performance
+  return await callApi('getRealtimeTally', {}, 'GET');
 }
