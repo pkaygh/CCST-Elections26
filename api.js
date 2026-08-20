@@ -1,4 +1,4 @@
-// api.js - Fixed version
+// api.js - Handles all communication with the Apps Script backend
 
 /**
  * Make a POST request to the Apps Script API
@@ -27,10 +27,11 @@ async function callApi(action, data = {}) {
     
     // Check if we got valid JSON
     try {
-      return JSON.parse(text);
+      const result = JSON.parse(text);
+      return result;
     } catch (e) {
       console.error('Invalid JSON response:', text);
-      return { success: false, message: 'Invalid response from server: ' + text.substring(0, 100) };
+      return { success: false, message: 'Invalid response from server' };
     }
   } catch (error) {
     console.error('API Error:', error);
