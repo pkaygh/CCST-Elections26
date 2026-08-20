@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
+  <title>CCST Elections — Cast Your Vote</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
   <style>
@@ -20,10 +22,7 @@
       padding: 2rem;
     }
 
-    .hotel-container {
-      max-width: 900px;
-      margin: 0 auto;
-    }
+    .hotel-container { max-width: 900px; margin: 0 auto; }
 
     .hotel-header {
       text-align: center;
@@ -36,48 +35,20 @@
       position: relative;
       overflow: hidden;
     }
-
     .hotel-header::before {
       content: '';
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      top: 0; left: 0; right: 0; bottom: 0;
       background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9a84c' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
       opacity: 0.3;
     }
-
-    .hotel-header .logo-icon {
-      font-size: 3rem;
-      color: var(--hotel-gold);
-      margin-bottom: 0.5rem;
-    }
-
-    .hotel-header h1 {
-      font-family: 'Playfair Display', serif;
-      color: #fff;
-      font-size: 2.2rem;
-      font-weight: 700;
-      letter-spacing: 2px;
-      position: relative;
-    }
-
-    .hotel-header h1 span {
-      color: var(--hotel-gold);
-    }
-
-    .hotel-header .subtitle {
-      color: rgba(255,255,255,0.6);
-      font-size: 0.9rem;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      position: relative;
-    }
+    .hotel-header .logo-icon { font-size: 3rem; color: var(--hotel-gold); margin-bottom: 0.5rem; }
+    .hotel-header h1 { font-family: 'Playfair Display', serif; color: #fff; font-size: 2.2rem; font-weight: 700; letter-spacing: 2px; position: relative; }
+    .hotel-header h1 span { color: var(--hotel-gold); }
+    .hotel-header .subtitle { color: rgba(255,255,255,0.6); font-size: 0.9rem; letter-spacing: 4px; text-transform: uppercase; position: relative; }
 
     .gold-divider {
-      width: 80px;
-      height: 2px;
+      width: 80px; height: 2px;
       background: linear-gradient(90deg, transparent, var(--hotel-gold), transparent);
       margin: 0.8rem auto;
     }
@@ -91,20 +62,8 @@
       margin-bottom: 2rem;
       box-shadow: 0 8px 32px rgba(0,0,0,0.12);
     }
-
-    .hotel-card .card-title {
-      font-family: 'Playfair Display', serif;
-      color: #fff;
-      font-size: 1.1rem;
-      margin-bottom: 1.2rem;
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-    }
-
-    .hotel-card .card-title i {
-      color: var(--hotel-gold);
-    }
+    .hotel-card .card-title { font-family: 'Playfair Display', serif; color: #fff; font-size: 1.1rem; margin-bottom: 1.2rem; display: flex; align-items: center; gap: 0.8rem; }
+    .hotel-card .card-title i { color: var(--hotel-gold); }
 
     .hotel-input {
       background: rgba(255,255,255,0.06);
@@ -115,27 +74,9 @@
       transition: all 0.3s ease;
       width: 100%;
     }
-
-    .hotel-input:focus {
-      background: rgba(255,255,255,0.1);
-      border-color: var(--hotel-gold);
-      box-shadow: 0 0 0 3px rgba(201,168,76,0.15);
-      color: #fff;
-      outline: none;
-    }
-
-    .hotel-input::placeholder {
-      color: rgba(255,255,255,0.35);
-    }
-
-    .hotel-label {
-      color: rgba(255,255,255,0.7);
-      font-size: 0.85rem;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-      margin-bottom: 0.4rem;
-      display: block;
-    }
+    .hotel-input:focus { background: rgba(255,255,255,0.1); border-color: var(--hotel-gold); box-shadow: 0 0 0 3px rgba(201,168,76,0.15); color: #fff; outline: none; }
+    .hotel-input::placeholder { color: rgba(255,255,255,0.35); }
+    .hotel-label { color: rgba(255,255,255,0.7); font-size: 0.85rem; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 0.4rem; display: block; }
 
     .candidate-card-hotel {
       background: rgba(255,255,255,0.04);
@@ -147,55 +88,14 @@
       transition: all 0.3s ease;
       height: 100%;
     }
-
-    .candidate-card-hotel:hover {
-      transform: translateY(-5px);
-      border-color: rgba(201,168,76,0.3);
-      background: rgba(255,255,255,0.08);
-    }
-
-    .candidate-card-hotel.selected {
-      border-color: var(--hotel-gold);
-      background: rgba(201,168,76,0.12);
-      box-shadow: 0 0 30px rgba(201,168,76,0.1);
-    }
-
-    .candidate-card-hotel .candidate-img {
-      width: 140px;
-      height: 140px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin: 0 auto 0.8rem;
-      border: 3px solid rgba(201,168,76,0.2);
-      transition: all 0.3s ease;
-      display: block;
-    }
-
-    .candidate-card-hotel.selected .candidate-img {
-      border-color: var(--hotel-gold);
-    }
-
-    .candidate-card-hotel .candidate-name {
-      color: #fff;
-      font-weight: 600;
-      font-size: 1rem;
-    }
-
-    .candidate-card-hotel .candidate-program {
-      color: rgba(255,255,255,0.5);
-      font-size: 0.8rem;
-    }
-
-    .candidate-card-hotel .check-mark {
-      display: none;
-      color: var(--hotel-gold);
-      font-size: 1.5rem;
-      margin-top: 0.5rem;
-    }
-
-    .candidate-card-hotel.selected .check-mark {
-      display: block;
-    }
+    .candidate-card-hotel:hover { transform: translateY(-5px); border-color: rgba(201,168,76,0.3); background: rgba(255,255,255,0.08); }
+    .candidate-card-hotel.selected { border-color: var(--hotel-gold); background: rgba(201,168,76,0.12); box-shadow: 0 0 30px rgba(201,168,76,0.1); }
+    .candidate-card-hotel .candidate-img { width: 140px; height: 140px; border-radius: 50%; object-fit: cover; margin: 0 auto 0.8rem; border: 3px solid rgba(201,168,76,0.2); transition: all 0.3s ease; display: block; }
+    .candidate-card-hotel.selected .candidate-img { border-color: var(--hotel-gold); }
+    .candidate-card-hotel .candidate-name { color: #fff; font-weight: 600; font-size: 1rem; }
+    .candidate-card-hotel .candidate-program { color: rgba(255,255,255,0.5); font-size: 0.8rem; }
+    .candidate-card-hotel .check-mark { display: none; color: var(--hotel-gold); font-size: 1.5rem; margin-top: 0.5rem; }
+    .candidate-card-hotel.selected .check-mark { display: block; }
 
     .vote-none-card {
       background: rgba(255,255,255,0.02);
@@ -206,166 +106,76 @@
       cursor: pointer;
       transition: all 0.3s ease;
       height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
       min-height: 240px;
     }
-
-    .vote-none-card:hover {
-      border-color: rgba(231, 76, 60, 0.4);
-      background: rgba(231, 76, 60, 0.05);
-    }
-
-    .vote-none-card.selected {
-      border-color: #e74c3c;
-      background: rgba(231, 76, 60, 0.1);
-      border-style: solid;
-    }
-
-    .vote-none-card .none-icon {
-      font-size: 3rem;
-      color: rgba(255,255,255,0.15);
-      margin-bottom: 0.5rem;
-    }
-
-    .vote-none-card.selected .none-icon {
-      color: #e74c3c;
-    }
-
-    .vote-none-card .none-label {
-      color: rgba(255,255,255,0.4);
-      font-weight: 500;
-      font-size: 1rem;
-    }
-
-    .vote-none-card.selected .none-label {
-      color: #e74c3c;
-    }
-
-    .vote-none-card .none-sub {
-      color: rgba(255,255,255,0.2);
-      font-size: 0.75rem;
-      margin-top: 0.3rem;
-    }
-
-    .vote-none-card .check-mark {
-      display: none;
-      color: #e74c3c;
-      font-size: 1.5rem;
-      margin-top: 0.5rem;
-    }
-
-    .vote-none-card.selected .check-mark {
-      display: block;
-    }
+    .vote-none-card:hover { border-color: rgba(231,76,60,0.4); background: rgba(231,76,60,0.05); }
+    .vote-none-card.selected { border-color: #e74c3c; background: rgba(231,76,60,0.1); border-style: solid; }
+    .vote-none-card .none-icon { font-size: 3rem; color: rgba(255,255,255,0.15); margin-bottom: 0.5rem; }
+    .vote-none-card.selected .none-icon { color: #e74c3c; }
+    .vote-none-card .none-label { color: rgba(255,255,255,0.4); font-weight: 500; font-size: 1rem; }
+    .vote-none-card.selected .none-label { color: #e74c3c; }
+    .vote-none-card .none-sub { color: rgba(255,255,255,0.2); font-size: 0.75rem; margin-top: 0.3rem; }
+    .vote-none-card .check-mark { display: none; color: #e74c3c; font-size: 1.5rem; margin-top: 0.5rem; }
+    .vote-none-card.selected .check-mark { display: block; }
 
     .position-header-vote {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      display: flex; justify-content: space-between; align-items: center;
       padding: 0.8rem 1.2rem;
       background: rgba(201,168,76,0.08);
       border-radius: 12px;
       margin-bottom: 1.2rem;
       border-left: 3px solid var(--hotel-gold);
-      flex-wrap: wrap;
-      gap: 0.5rem;
+      flex-wrap: wrap; gap: 0.5rem;
     }
-
-    .position-header-vote h5 {
-      color: #fff;
-      font-weight: 600;
-      margin: 0;
-    }
-
-    .position-header-vote .vote-badge {
-      background: rgba(201,168,76,0.15);
-      color: var(--hotel-gold);
-      padding: 0.2rem 0.8rem;
-      border-radius: 50px;
-      font-size: 0.7rem;
-    }
+    .position-header-vote h5 { color: #fff; font-weight: 600; margin: 0; }
+    .position-header-vote .vote-badge { background: rgba(201,168,76,0.15); color: var(--hotel-gold); padding: 0.2rem 0.8rem; border-radius: 50px; font-size: 0.7rem; }
 
     .btn-hotel-primary {
       background: linear-gradient(135deg, var(--hotel-gold), #a8883a);
-      border: none;
-      color: #1A1A2E;
-      font-weight: 600;
-      padding: 1rem 2rem;
-      border-radius: 12px;
+      border: none; color: #1A1A2E; font-weight: 600;
+      padding: 1rem 2rem; border-radius: 12px;
+      transition: all 0.3s ease; width: 100%; font-size: 1.1rem; letter-spacing: 1px;
+    }
+    .btn-hotel-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(201,168,76,0.3); color: #1A1A2E; }
+    .btn-hotel-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .btn-hotel-secondary {
+      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+      color: #fff; font-weight: 500; padding: 0.7rem 1.5rem; border-radius: 12px;
       transition: all 0.3s ease;
-      width: 100%;
-      font-size: 1.1rem;
-      letter-spacing: 1px;
     }
+    .btn-hotel-secondary:hover { background: rgba(255,255,255,0.15); color: #fff; }
 
-    .btn-hotel-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(201,168,76,0.3);
-      color: #1A1A2E;
-    }
-
-    .btn-hotel-primary:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    .auth-message {
-      text-align: center;
-      font-weight: 500;
-      margin-top: 1rem;
-      font-size: 1.1rem;
-    }
-
-    .auth-message.success {
-      color: #2ecc71;
-    }
-
-    .auth-message.error {
-      color: #e74c3c;
-    }
+    .auth-message { text-align: center; font-weight: 500; margin-top: 1rem; font-size: 1.1rem; }
+    .auth-message.success { color: #2ecc71; }
+    .auth-message.error { color: #e74c3c; white-space: pre-wrap; text-align: left; }
 
     .loading-spinner {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 3rem 0;
-      color: rgba(255,255,255,0.3);
+      display: flex; justify-content: center; align-items: center;
+      padding: 3rem 0; color: rgba(255,255,255,0.3);
     }
+    .loading-spinner i { font-size: 2rem; animation: spin 1s linear infinite; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-    .loading-spinner i {
-      font-size: 2rem;
-      animation: spin 1s linear infinite;
-    }
+    .status-badge { font-size: 0.7rem; padding: 0.2rem 0.7rem; border-radius: 50px; }
+    .status-badge.selected-candidate { background: rgba(201,168,76,0.2); color: var(--hotel-gold); }
+    .status-badge.voted-none { background: rgba(231,76,60,0.2); color: #e74c3c; }
+    .status-badge.not-voted { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.3); }
 
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+    .error-help {
+      background: rgba(231,76,60,0.08);
+      border: 1px solid rgba(231,76,60,0.3);
+      border-radius: 12px;
+      padding: 1rem 1.2rem;
+      color: rgba(255,255,255,0.85);
+      font-size: 0.85rem;
+      line-height: 1.5;
+      text-align: left;
+      margin-top: 1rem;
     }
-
-    .status-badge {
-      font-size: 0.7rem;
-      padding: 0.2rem 0.7rem;
-      border-radius: 50px;
-    }
-
-    .status-badge.selected-candidate {
-      background: rgba(201,168,76,0.2);
-      color: var(--hotel-gold);
-    }
-
-    .status-badge.voted-none {
-      background: rgba(231, 76, 60, 0.2);
-      color: #e74c3c;
-    }
-
-    .status-badge.not-voted {
-      background: rgba(255,255,255,0.05);
-      color: rgba(255,255,255,0.3);
-    }
+    .error-help code { background: rgba(0,0,0,0.4); color: #ffd; padding: 1px 6px; border-radius: 4px; font-size: 0.85em; }
+    .error-help details { margin-top: 0.5rem; }
+    .error-help summary { cursor: pointer; color: var(--hotel-gold); }
 
     @media (max-width: 768px) {
       body { padding: 1rem; }
@@ -379,7 +189,7 @@
 <body>
 
 <div class="hotel-container">
-  
+
   <div class="hotel-header">
     <div class="logo-icon"><i class="bi bi-building"></i></div>
     <h1>CCST <span>Elections</span></h1>
@@ -426,48 +236,103 @@
   const selectedVotes = {};
   const votedNone = {};
 
-  window.onload = function() {
-    loadBallot();
-  };
+  window.onload = function () { loadBallot(); };
 
+  // -------------------------------------------------------------
+  // Render the troubleshooting box (richer than a single sentence)
+  // -------------------------------------------------------------
+  function renderError(html, message) {
+    const safeMsg = (message || '').replace(/[<>&]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]));
+    return `
+      <div class="hotel-card" style="text-align:center;padding:2rem;">
+        <i class="bi bi-exclamation-triangle" style="font-size:3rem;color:#e74c3c;display:block;margin-bottom:1rem;"></i>
+        <h5 style="color:#fff;margin-bottom:0.5rem;">Cannot load the ballot</h5>
+        <p style="color:rgba(255,255,255,0.7);margin-bottom:1rem;">${safeMsg.replace(/\n/g,'<br>')}</p>
+        <div style="display:flex;gap:0.5rem;justify-content:center;flex-wrap:wrap;">
+          <button class="btn-hotel-primary" onclick="loadBallot()" style="max-width:160px;padding:0.5rem 1rem;font-size:0.9rem;">
+            <i class="bi bi-arrow-repeat me-2"></i>Retry
+          </button>
+          <button class="btn-hotel-secondary" onclick="runDiagnostic()" style="padding:0.5rem 1rem;font-size:0.9rem;">
+            <i class="bi bi-wifi me-2"></i>Test connection
+          </button>
+        </div>
+        <div id="diagnostic-output" style="margin-top:1.5rem;text-align:left;"></div>
+        <div class="error-help">
+          <strong><i class="bi bi-lightbulb me-1"></i>Most common fixes:</strong>
+          <ol style="margin:0.5rem 0 0 1.2rem;padding:0;">
+            <li>Open the Apps Script editor → <b>Deploy → Manage deployments</b> → confirm the latest deployment has <b>"Who has access: Anyone"</b>. If not, edit it and re-deploy.</li>
+            <li>Make sure <code>config.js</code> is in the same folder as this file and contains your current <b>deployment URL</b>.</li>
+            <li>If you opened this page directly from disk (<code>file://</code>), some browsers block requests to <code>https://</code>. Host the page on a web server, or enable a CORS proxy in <code>config.js</code>.</li>
+          </ol>
+          <details>
+            <summary>Advanced: enable a CORS proxy</summary>
+            <p style="margin:0.5rem 0 0 0;">Open <code>config.js</code> and uncomment one of the <code>CORS_PROXY</code> lines, for example:</p>
+            <pre style="background:rgba(0,0,0,0.4);padding:0.6rem;border-radius:8px;color:#ffd;overflow:auto;margin:0.5rem 0 0 0;"><code>CORS_PROXY: 'https://corsproxy.io/?',</code></pre>
+            <p style="margin:0.5rem 0 0 0;">Then refresh this page. The "Test connection" button will tell you which fallback is working.</p>
+          </details>
+        </div>
+      </div>
+    `;
+  }
+
+  // -------------------------------------------------------------
+  // Diagnostic — calls each strategy and reports which work
+  // -------------------------------------------------------------
+  async function runDiagnostic() {
+    const out = document.getElementById('diagnostic-output');
+    if (!out) return;
+    out.innerHTML = '<div class="loading-spinner" style="padding:1rem;"><i class="bi bi-hourglass-split"></i><span style="margin-left:.5rem;">Testing connection…</span></div>';
+    try {
+      const r = await pingApi();
+      const fmt = v => JSON.stringify(v, null, 2).replace(/[<>]/g, c => ({'<':'&lt;','>':'&gt;'}[c]));
+      out.innerHTML = `
+        <div class="error-help" style="margin-top:0;">
+          <strong>Diagnostic report</strong>
+          <ul style="margin:0.5rem 0 0 1.2rem;padding:0;list-style:none;">
+            <li>🌐 Page protocol: <code>${r.pageProtocol}</code></li>
+            <li>🔗 API URL looks valid: <b>${r.apiUrlLooksValid ? '✅ yes' : '❌ no'}</b></li>
+            <li>🛡️ CORS proxy configured: <b>${r.corsProxyConfigured ? '✅ yes' : '❌ no'}</b></li>
+            <li>1️⃣ Direct fetch: <b>${r.strategies.direct?.ok ? '✅ works' : '❌ failed'}</b> ${r.strategies.direct?.error ? '— ' + r.strategies.direct.error : (r.strategies.direct?.status ? '(HTTP '+r.strategies.direct.status+')' : '')}</li>
+            <li>2️⃣ JSONP: <b>${r.strategies.jsonp?.ok ? '✅ works' : '❌ failed'}</b> ${r.strategies.jsonp?.error ? '— ' + r.strategies.jsonp.error : ''}</li>
+            ${r.strategies.corsProxy ? '<li>3️⃣ CORS proxy: <b>' + (r.strategies.corsProxy.ok ? '✅ works' : '❌ failed') + '</b> ' + (r.strategies.corsProxy.error || (r.strategies.corsProxy.status ? '(HTTP '+r.strategies.corsProxy.status+')' : '')) + '</li>' : ''}
+          </ul>
+          <details style="margin-top:0.5rem;">
+            <summary>Raw response</summary>
+            <pre style="background:rgba(0,0,0,0.4);padding:0.6rem;border-radius:8px;color:#ffd;overflow:auto;margin:0.5rem 0 0 0;max-height:240px;">${fmt(r)}</pre>
+          </details>
+        </div>
+      `;
+    } catch (e) {
+      out.innerHTML = '<div class="error-help" style="margin-top:0;">Diagnostic failed: ' + (e.message || e) + '</div>';
+    }
+  }
+  window.runDiagnostic = runDiagnostic;
+
+  // -------------------------------------------------------------
+  // Load ballot — now with rich error UI
+  // -------------------------------------------------------------
   async function loadBallot() {
     const container = document.getElementById('ballotContainer');
     container.innerHTML = '<div class="loading-spinner"><i class="bi bi-hourglass-split"></i><span style="margin-left:1rem;">Loading ballot...</span></div>';
-    
+
     try {
-      console.log('Fetching ballot data from:', CONFIG.API_URL);
+      console.log('Fetching ballot data from:', CONFIG && CONFIG.API_URL);
       const result = await getBallotData();
       console.log('Ballot result:', result);
-      
-      if (result.success) {
+
+      if (result && result.success) {
         renderBallot(result.data);
       } else {
-        container.innerHTML = `
-          <div class="hotel-card" style="text-align:center;padding:3rem;">
-            <i class="bi bi-exclamation-triangle" style="font-size:3rem;color:#e74c3c;display:block;margin-bottom:1rem;"></i>
-            <p style="color:rgba(255,255,255,0.6);">Failed to load ballot: ${result.message || 'Unknown error'}</p>
-            <button class="btn-hotel-primary" onclick="loadBallot()" style="max-width:200px;margin:0 auto;padding:0.5rem 1rem;font-size:0.9rem;">
-              <i class="bi bi-arrow-repeat me-2"></i>Retry
-            </button>
-          </div>
-        `;
+        container.innerHTML = renderError(null, (result && result.message) || 'Unknown error');
       }
     } catch (error) {
       console.error('Load ballot error:', error);
-      container.innerHTML = `
-        <div class="hotel-card" style="text-align:center;padding:3rem;">
-          <i class="bi bi-exclamation-triangle" style="font-size:3rem;color:#e74c3c;display:block;margin-bottom:1rem;"></i>
-          <p style="color:rgba(255,255,255,0.6);">Error loading ballot: ${error.message}</p>
-          <button class="btn-hotel-primary" onclick="loadBallot()" style="max-width:200px;margin:0 auto;padding:0.5rem 1rem;font-size:0.9rem;">
-            <i class="bi bi-arrow-repeat me-2"></i>Retry
-          </button>
-        </div>
-      `;
+      container.innerHTML = renderError(null, error.message || String(error));
     }
   }
 
   function renderBallot(data) {
-    ballotConfig = data;
+    ballotConfig = data || {};
     const container = document.getElementById('ballotContainer');
     container.innerHTML = '';
 
@@ -475,21 +340,19 @@
       container.innerHTML = `
         <div class="hotel-card" style="text-align:center;padding:3rem;">
           <i class="bi bi-inbox" style="font-size:3rem;color:rgba(255,255,255,0.1);display:block;margin-bottom:1rem;"></i>
-          <p style="color:rgba(255,255,255,0.4);">No positions available for voting.</p>
+          <p style="color:rgba(255,255,255,0.4);">No positions available for voting yet. Please ask the admin to add candidates.</p>
         </div>
       `;
       return;
     }
 
-    Object.keys(data).forEach(position => {
+    Object.keys(data).forEach(function (position) {
       const posId = position.replace(/[^a-zA-Z0-9]/g, '');
-      
+
       let html = `
         <div class="hotel-card">
           <div class="position-header-vote">
-            <div>
-              <h5><i class="bi bi-trophy me-2" style="color:var(--hotel-gold);"></i>${position}</h5>
-            </div>
+            <div><h5><i class="bi bi-trophy me-2" style="color:var(--hotel-gold);"></i>${position}</h5></div>
             <div>
               <span class="vote-badge me-2"><i class="bi bi-people me-1"></i>${data[position].length} candidate${data[position].length > 1 ? 's' : ''}</span>
               <span id="status-${posId}" class="status-badge not-voted">Not voted</span>
@@ -498,13 +361,13 @@
           <div class="row row-cols-2 row-cols-md-3 g-3" id="position-${posId}">
       `;
 
-      data[position].forEach(cand => {
+      data[position].forEach(function (cand) {
         html += `
           <div class="col">
-            <div class="candidate-card-hotel" onclick="selectCandidate('${position}', '${cand.name}', this, '${posId}')">
-              <img src="${cand.img || 'https://via.placeholder.com/140'}" class="candidate-img" alt="${cand.name}">
-              <div class="candidate-name">${cand.name}</div>
-              <div class="candidate-program"><i class="bi bi-book me-1"></i>${cand.program}</div>
+            <div class="candidate-card-hotel" onclick="selectCandidate('${escapeAttr(position)}', '${escapeAttr(cand.name)}', this, '${posId}')">
+              <img src="${cand.img || 'https://via.placeholder.com/140'}" class="candidate-img" alt="${escapeAttr(cand.name)}">
+              <div class="candidate-name">${escapeHTML(cand.name)}</div>
+              <div class="candidate-program"><i class="bi bi-book me-1"></i>${escapeHTML(cand.program || '')}</div>
               <div class="check-mark"><i class="bi bi-check-circle-fill"></i></div>
             </div>
           </div>
@@ -513,7 +376,7 @@
 
       html += `
         <div class="col">
-          <div class="vote-none-card" onclick="selectNone('${position}', '${posId}', this)">
+          <div class="vote-none-card" onclick="selectNone('${escapeAttr(position)}', '${posId}', this)">
             <div class="none-icon"><i class="bi bi-x-circle"></i></div>
             <div class="none-label">Vote for None</div>
             <div class="none-sub">I choose not to vote for this position</div>
@@ -521,15 +384,18 @@
           </div>
         </div>
       `;
-
       html += `</div></div>`;
       container.innerHTML += html;
     });
   }
 
+  // Tiny helpers to prevent HTML/quote injection from candidate names
+  function escapeHTML(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+  function escapeAttr(s) { return escapeHTML(s).replace(/'/g, '&#39;'); }
+
   function selectCandidate(position, candidateName, cardElement, posId) {
-    const container = document.getElementById(`position-${posId}`);
-    
+    const container = document.getElementById('position-' + posId);
+
     if (cardElement.classList.contains('selected')) {
       cardElement.classList.remove('selected');
       delete selectedVotes[position];
@@ -537,7 +403,6 @@
       updateStatus(posId, 'not-voted');
       return;
     }
-    
     container.querySelectorAll('.candidate-card-hotel, .vote-none-card').forEach(c => c.classList.remove('selected'));
     cardElement.classList.add('selected');
     selectedVotes[position] = candidateName;
@@ -546,8 +411,7 @@
   }
 
   function selectNone(position, posId, cardElement) {
-    const container = document.getElementById(`position-${posId}`);
-    
+    const container = document.getElementById('position-' + posId);
     if (cardElement.classList.contains('selected')) {
       cardElement.classList.remove('selected');
       delete selectedVotes[position];
@@ -555,7 +419,6 @@
       updateStatus(posId, 'not-voted');
       return;
     }
-    
     container.querySelectorAll('.candidate-card-hotel, .vote-none-card').forEach(c => c.classList.remove('selected'));
     cardElement.classList.add('selected');
     delete selectedVotes[position];
@@ -564,21 +427,19 @@
   }
 
   function updateStatus(posId, status) {
-    const badge = document.getElementById(`status-${posId}`);
+    const badge = document.getElementById('status-' + posId);
     if (!badge) return;
-    
     const statusMap = {
-      'not-voted': { class: 'not-voted', text: 'Not voted' },
-      'selected-candidate': { class: 'selected-candidate', text: '✅ Voted' },
-      'voted-none': { class: 'voted-none', text: '⛔ Voted None' }
+      'not-voted':         { cls: 'not-voted',         text: 'Not voted' },
+      'selected-candidate':{ cls: 'selected-candidate',text: '✅ Voted' },
+      'voted-none':        { cls: 'voted-none',        text: '⛔ Voted None' }
     };
-    
     const s = statusMap[status] || statusMap['not-voted'];
-    badge.className = `status-badge ${s.class}`;
+    badge.className = 'status-badge ' + s.cls;
     badge.textContent = s.text;
   }
 
-  document.getElementById('voteForm').onsubmit = async function(e) {
+  document.getElementById('voteForm').onsubmit = async function (e) {
     e.preventDefault();
     const btn = document.getElementById('submitBtn');
     btn.disabled = true;
@@ -586,10 +447,10 @@
 
     const voterName = document.getElementById('voterName').value;
     const studentId = document.getElementById('studentId').value;
-    
+
     const votedPositions = Object.keys(selectedVotes);
-    const nonePositions = Object.keys(votedNone);
-    
+    const nonePositions  = Object.keys(votedNone);
+
     if (votedPositions.length === 0 && nonePositions.length === 0) {
       const msg = document.getElementById('msg');
       msg.innerHTML = '<i class="bi bi-exclamation-triangle-fill me-2"></i>Please vote in at least one position or select "Vote for None" for all.';
@@ -600,24 +461,24 @@
     }
 
     const result = await submitVotes(voterName, studentId, selectedVotes, votedNone);
-    
+
     const msg = document.getElementById('msg');
-    msg.innerHTML = result.success 
-      ? `<i class="bi bi-check-circle-fill me-2"></i>${result.message}`
-      : `<i class="bi bi-exclamation-triangle-fill me-2"></i>${result.message}`;
-    msg.className = `auth-message ${result.success ? 'success' : 'error'}`;
-    
+    msg.innerHTML = result.success
+      ? '<i class="bi bi-check-circle-fill me-2"></i>' + (result.message || 'Vote submitted!')
+      : '<i class="bi bi-exclamation-triangle-fill me-2"></i>' + (result.message || 'Submission failed.');
+    msg.className = 'auth-message ' + (result.success ? 'success' : 'error');
+
     if (result.success) {
       document.getElementById('voteForm').reset();
       document.querySelectorAll('.candidate-card-hotel, .vote-none-card').forEach(c => c.classList.remove('selected'));
-      Object.keys(selectedVotes).forEach(key => delete selectedVotes[key]);
-      Object.keys(votedNone).forEach(key => delete votedNone[key]);
+      Object.keys(selectedVotes).forEach(k => delete selectedVotes[k]);
+      Object.keys(votedNone).forEach(k => delete votedNone[k]);
       Object.keys(ballotConfig).forEach(pos => {
         const posId = pos.replace(/[^a-zA-Z0-9]/g, '');
         updateStatus(posId, 'not-voted');
       });
     }
-    
+
     btn.disabled = false;
     btn.innerHTML = '<i class="bi bi-check-circle me-2"></i>Submit Final Ballot';
   };
