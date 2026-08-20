@@ -30,7 +30,7 @@ const CONFIG = {
   //
   // Uncomment ONE of the lines below to enable the proxy fallback:
   //
-  // CORS_PROXY: 'https://corsproxy.io/?',
+   CORS_PROXY: 'https://corsproxy.io/?',
   // CORS_PROXY: 'https://api.allorigins.win/raw?url=',
   // CORS_PROXY: 'https://api.codetabs.com/v1/proxy?quest=',
 
