@@ -1,4 +1,4 @@
-// api.js - Handles all communication with the Apps Script backend
+// api.js - Fixed version
 
 /**
  * Make a POST request to the Apps Script API
@@ -12,15 +12,26 @@ async function callApi(action, data = {}) {
     
     const response = await fetch(CONFIG.API_URL, {
       method: 'POST',
-      mode: 'no-cors', // Important for Apps Script
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(payload)
     });
     
+    // Check if response is OK
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
     const text = await response.text();
-    return JSON.parse(text);
+    
+    // Check if we got valid JSON
+    try {
+      return JSON.parse(text);
+    } catch (e) {
+      console.error('Invalid JSON response:', text);
+      return { success: false, message: 'Invalid response from server: ' + text.substring(0, 100) };
+    }
   } catch (error) {
     console.error('API Error:', error);
     return { success: false, message: error.toString() };
