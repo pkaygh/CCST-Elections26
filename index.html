@@ -429,12 +429,14 @@
   window.onload = function() {
     loadBallot();
   };
-
-  async function loadBallot() {
-    const container = document.getElementById('ballotContainer');
-    container.innerHTML = '<div class="loading-spinner"><i class="bi bi-hourglass-split"></i><span style="margin-left:1rem;">Loading ballot...</span></div>';
-    
+async function loadBallot() {
+  const container = document.getElementById('ballotContainer');
+  container.innerHTML = '<div class="loading-spinner"><i class="bi bi-hourglass-split"></i><span style="margin-left:1rem;">Loading ballot...</span></div>';
+  
+  try {
+    console.log('Fetching ballot data from:', CONFIG.API_URL);
     const result = await getBallotData();
+    console.log('Ballot result:', result);
     
     if (result.success) {
       renderBallot(result.data);
@@ -442,11 +444,27 @@
       container.innerHTML = `
         <div class="hotel-card" style="text-align:center;padding:3rem;">
           <i class="bi bi-exclamation-triangle" style="font-size:3rem;color:#e74c3c;display:block;margin-bottom:1rem;"></i>
-          <p style="color:rgba(255,255,255,0.6);">Failed to load ballot: ${result.message}</p>
+          <p style="color:rgba(255,255,255,0.6);">Failed to load ballot: ${result.message || 'Unknown error'}</p>
+          <button class="btn-hotel-primary" onclick="loadBallot()" style="max-width:200px;margin:0 auto;padding:0.5rem 1rem;font-size:0.9rem;">
+            <i class="bi bi-arrow-repeat me-2"></i>Retry
+          </button>
         </div>
       `;
     }
+  } catch (error) {
+    console.error('Load ballot error:', error);
+    container.innerHTML = `
+      <div class="hotel-card" style="text-align:center;padding:3rem;">
+        <i class="bi bi-exclamation-triangle" style="font-size:3rem;color:#e74c3c;display:block;margin-bottom:1rem;"></i>
+        <p style="color:rgba(255,255,255,0.6);">Error loading ballot: ${error.message}</p>
+        <button class="btn-hotel-primary" onclick="loadBallot()" style="max-width:200px;margin:0 auto;padding:0.5rem 1rem;font-size:0.9rem;">
+          <i class="bi bi-arrow-repeat me-2"></i>Retry
+        </button>
+      </div>
+    `;
   }
+}
+
 
   function renderBallot(data) {
     ballotConfig = data;
