@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
+  <title>CCST Elections — Live Results</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
   <style>
@@ -20,10 +22,7 @@
       padding: 2rem;
     }
 
-    .hotel-container {
-      max-width: 900px;
-      margin: 0 auto;
-    }
+    .hotel-container { max-width: 900px; margin: 0 auto; }
 
     .hotel-header {
       text-align: center;
@@ -36,73 +35,22 @@
       position: relative;
       overflow: hidden;
     }
-
     .hotel-header::before {
       content: '';
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      top: 0; left: 0; right: 0; bottom: 0;
       background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9a84c' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
       opacity: 0.3;
     }
+    .hotel-header .logo-icon { font-size: 3rem; color: var(--hotel-gold); margin-bottom: 0.5rem; }
+    .hotel-header h1 { font-family: 'Playfair Display', serif; color: #fff; font-size: 2.2rem; font-weight: 700; letter-spacing: 2px; position: relative; }
+    .hotel-header h1 span { color: var(--hotel-gold); }
+    .hotel-header .subtitle { color: rgba(255,255,255,0.6); font-size: 0.9rem; letter-spacing: 4px; text-transform: uppercase; position: relative; }
+    .gold-divider { width: 80px; height: 2px; background: linear-gradient(90deg, transparent, var(--hotel-gold), transparent); margin: 0.8rem auto; }
 
-    .hotel-header .logo-icon {
-      font-size: 3rem;
-      color: var(--hotel-gold);
-      margin-bottom: 0.5rem;
-    }
-
-    .hotel-header h1 {
-      font-family: 'Playfair Display', serif;
-      color: #fff;
-      font-size: 2.2rem;
-      font-weight: 700;
-      letter-spacing: 2px;
-      position: relative;
-    }
-
-    .hotel-header h1 span {
-      color: var(--hotel-gold);
-    }
-
-    .hotel-header .subtitle {
-      color: rgba(255,255,255,0.6);
-      font-size: 0.9rem;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      position: relative;
-    }
-
-    .gold-divider {
-      width: 80px;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, var(--hotel-gold), transparent);
-      margin: 0.8rem auto;
-    }
-
-    .live-badge {
-      display: inline-block;
-      background: #e74c3c;
-      color: #fff;
-      padding: 0.3rem 1.2rem;
-      border-radius: 50px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      animation: pulse 1.5s ease-in-out infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
-    }
-
-    .live-badge i {
-      margin-right: 0.5rem;
-    }
+    .live-badge { display: inline-block; background: #e74c3c; color: #fff; padding: 0.3rem 1.2rem; border-radius: 50px; font-size: 0.75rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; animation: pulse 1.5s ease-in-out infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+    .live-badge i { margin-right: 0.5rem; }
 
     .result-card {
       background: rgba(255,255,255,0.05);
@@ -113,146 +61,57 @@
       margin-bottom: 2rem;
       box-shadow: 0 8px 32px rgba(0,0,0,0.12);
     }
+    .result-card .result-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.06); margin-bottom: 1.2rem; flex-wrap: wrap; gap: 0.5rem; }
+    .result-card .result-header h3 { font-family: 'Playfair Display', serif; color: #fff; font-size: 1.3rem; margin: 0; }
+    .result-card .result-header .total-badge { background: rgba(201,168,76,0.15); color: var(--hotel-gold); padding: 0.3rem 1rem; border-radius: 50px; font-size: 0.8rem; }
 
-    .result-card .result-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-bottom: 1rem;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-      margin-bottom: 1.2rem;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-    }
+    .candidate-result { display: flex; align-items: center; gap: 1rem; padding: 0.8rem; border-radius: 12px; margin-bottom: 0.6rem; transition: all 0.3s ease; background: rgba(255,255,255,0.03); }
+    .candidate-result:hover { background: rgba(255,255,255,0.06); }
+    .candidate-result .avatar { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(201,168,76,0.2); flex-shrink: 0; }
+    .candidate-result .result-info { flex: 1; }
+    .candidate-result .result-info .cand-name { color: #fff; font-weight: 500; font-size: 0.95rem; }
+    .candidate-result .result-info .cand-program { color: rgba(255,255,255,0.4); font-size: 0.8rem; }
+    .candidate-result .result-stats { text-align: right; flex-shrink: 0; }
+    .candidate-result .result-stats .votes { color: var(--hotel-gold); font-weight: 600; font-size: 1rem; }
+    .candidate-result .result-stats .percent { color: rgba(255,255,255,0.4); font-size: 0.8rem; }
 
-    .result-card .result-header h3 {
-      font-family: 'Playfair Display', serif;
-      color: #fff;
-      font-size: 1.3rem;
-      margin: 0;
-    }
+    .progress-hotel { height: 6px; background: rgba(255,255,255,0.06); border-radius: 10px; overflow: hidden; margin-top: 4px; }
+    .progress-hotel .progress-bar { height: 100%; border-radius: 10px; background: linear-gradient(90deg, var(--hotel-gold), #e8c84c); transition: width 0.5s ease; }
 
-    .result-card .result-header .total-badge {
-      background: rgba(201,168,76,0.15);
-      color: var(--hotel-gold);
-      padding: 0.3rem 1rem;
-      border-radius: 50px;
-      font-size: 0.8rem;
-    }
+    .loading-spinner { display: flex; justify-content: center; align-items: center; padding: 4rem 0; color: rgba(255,255,255,0.3); }
+    .loading-spinner i { font-size: 2.5rem; animation: spin 1s linear infinite; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-    .candidate-result {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      padding: 0.8rem;
+    .no-data { text-align: center; padding: 4rem 0; color: rgba(255,255,255,0.2); }
+    .no-data i { font-size: 3rem; display: block; margin-bottom: 1rem; }
+
+    .top-performer { border-left: 3px solid var(--hotel-gold); background: rgba(201,168,76,0.06); }
+    .vote-none-row { border-left: 3px solid #e74c3c; background: rgba(231,76,60,0.05); }
+    .vote-none-row .votes { color: #e74c3c !important; }
+
+    .error-help {
+      background: rgba(231,76,60,0.08);
+      border: 1px solid rgba(231,76,60,0.3);
       border-radius: 12px;
-      margin-bottom: 0.6rem;
-      transition: all 0.3s ease;
-      background: rgba(255,255,255,0.03);
+      padding: 1rem 1.2rem;
+      color: rgba(255,255,255,0.85);
+      font-size: 0.85rem;
+      line-height: 1.5;
+      text-align: left;
+      margin-top: 1rem;
     }
+    .error-help code { background: rgba(0,0,0,0.4); padding: 1px 6px; border-radius: 4px; font-size: 0.85em; }
 
-    .candidate-result:hover {
-      background: rgba(255,255,255,0.06);
-    }
-
-    .candidate-result .avatar {
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid rgba(201,168,76,0.2);
-      flex-shrink: 0;
-    }
-
-    .candidate-result .result-info {
-      flex: 1;
-    }
-
-    .candidate-result .result-info .cand-name {
+    .btn-secondary-sm {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
       color: #fff;
-      font-weight: 500;
-      font-size: 0.95rem;
-    }
-
-    .candidate-result .result-info .cand-program {
-      color: rgba(255,255,255,0.4);
+      padding: 0.4rem 1rem;
+      border-radius: 8px;
       font-size: 0.8rem;
+      margin-top: 0.5rem;
     }
-
-    .candidate-result .result-stats {
-      text-align: right;
-      flex-shrink: 0;
-    }
-
-    .candidate-result .result-stats .votes {
-      color: var(--hotel-gold);
-      font-weight: 600;
-      font-size: 1rem;
-    }
-
-    .candidate-result .result-stats .percent {
-      color: rgba(255,255,255,0.4);
-      font-size: 0.8rem;
-    }
-
-    .progress-hotel {
-      height: 6px;
-      background: rgba(255,255,255,0.06);
-      border-radius: 10px;
-      overflow: hidden;
-      margin-top: 4px;
-    }
-
-    .progress-hotel .progress-bar {
-      height: 100%;
-      border-radius: 10px;
-      background: linear-gradient(90deg, var(--hotel-gold), #e8c84c);
-      transition: width 0.5s ease;
-    }
-
-    .loading-spinner {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 4rem 0;
-      color: rgba(255,255,255,0.3);
-    }
-
-    .loading-spinner i {
-      font-size: 2.5rem;
-      animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    .no-data {
-      text-align: center;
-      padding: 4rem 0;
-      color: rgba(255,255,255,0.2);
-    }
-
-    .no-data i {
-      font-size: 3rem;
-      display: block;
-      margin-bottom: 1rem;
-    }
-
-    .top-performer {
-      border-left: 3px solid var(--hotel-gold);
-      background: rgba(201,168,76,0.06);
-    }
-
-    .vote-none-row {
-      border-left: 3px solid #e74c3c;
-      background: rgba(231,76,60,0.05);
-    }
-
-    .vote-none-row .votes {
-      color: #e74c3c !important;
-    }
+    .btn-secondary-sm:hover { background: rgba(255,255,255,0.15); color: #fff; }
 
     @media (max-width: 768px) {
       body { padding: 1rem; }
@@ -267,15 +126,13 @@
 <body>
 
 <div class="hotel-container">
-  
+
   <div class="hotel-header">
     <div class="logo-icon"><i class="bi bi-building"></i></div>
     <h1>CCST <span>Elections</span></h1>
     <div class="gold-divider"></div>
     <p class="subtitle">Live Results Dashboard</p>
-    <div style="margin-top:1rem;">
-      <span class="live-badge"><i class="bi bi-circle-fill"></i>Live</span>
-    </div>
+    <div style="margin-top:1rem;"><span class="live-badge"><i class="bi bi-circle-fill"></i>Live</span></div>
   </div>
 
   <div id="dashboard">
@@ -290,32 +147,74 @@
 <script src="api.js"></script>
 <script>
   let lastData = null;
+  let consecutiveFailures = 0;
+
+  function escapeHTML(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+  function escapeAttr(s) { return escapeHTML(s).replace(/'/g, '&#39;'); }
 
   async function fetchTally() {
-    const result = await getRealtimeTally();
-    if (result.success) {
-      renderResults(result.data);
-    } else {
-      document.getElementById('dashboard').innerHTML = `
-        <div class="no-data">
-          <i class="bi bi-exclamation-triangle"></i>
-          <p style="color:#e74c3c;">Failed to load results: ${result.message}</p>
-        </div>
-      `;
+    try {
+      const result = await getRealtimeTally();
+      if (result && result.success) {
+        consecutiveFailures = 0;
+        renderResults(result.data);
+      } else {
+        showError(result && result.message);
+      }
+    } catch (e) {
+      showError(e.message || String(e));
     }
   }
+
+  function showError(message) {
+    consecutiveFailures++;
+    const dash = document.getElementById('dashboard');
+    if (consecutiveFailures >= 3) {
+      // After 3 failures, slow down polling to once per minute
+      if (window._tallyInterval) { clearInterval(window._tallyInterval); window._tallyInterval = setInterval(fetchTally, 60000); }
+    }
+    const safe = String(message || 'Unknown error').replace(/[<>&]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]));
+    dash.innerHTML = `
+      <div class="result-card" style="text-align:center;">
+        <i class="bi bi-exclamation-triangle" style="font-size:3rem;color:#e74c3c;display:block;margin-bottom:1rem;"></i>
+        <h5 style="color:#fff;margin-bottom:0.5rem;">Cannot load results</h5>
+        <p style="color:rgba(255,255,255,0.7);">${safe.replace(/\n/g,'<br>')}</p>
+        <div style="display:flex;gap:0.5rem;justify-content:center;flex-wrap:wrap;margin-top:1rem;">
+          <button class="btn-secondary-sm" onclick="fetchTally()"><i class="bi bi-arrow-repeat me-1"></i>Retry now</button>
+          <button class="btn-secondary-sm" onclick="runResultsDiag()"><i class="bi bi-wifi me-1"></i>Test connection</button>
+        </div>
+        <div id="results-diag" style="margin-top:1rem;text-align:left;"></div>
+        <div class="error-help" style="margin-top:1rem;">
+          <strong>Common fixes:</strong>
+          <ul style="margin:0.5rem 0 0 1.2rem;padding:0;">
+            <li>Apps Script deployment must have <b>"Who has access: Anyone"</b>.</li>
+            <li>Confirm <code>config.js</code> has the latest deployment URL.</li>
+            <li>If the page is opened from <code>file://</code>, enable a CORS proxy in <code>config.js</code>.</li>
+          </ul>
+        </div>
+      </div>
+    `;
+  }
+
+  async function runResultsDiag() {
+    const out = document.getElementById('results-diag');
+    if (!out) return;
+    out.innerHTML = '<small style="color:rgba(255,255,255,0.5);">Testing…</small>';
+    try {
+      const r = await pingApi();
+      out.innerHTML = '<pre style="background:rgba(0,0,0,0.4);padding:0.6rem;border-radius:8px;color:#ffd;overflow:auto;margin:0;font-size:0.75rem;max-height:200px;">' + JSON.stringify(r, null, 2) + '</pre>';
+    } catch (e) {
+      out.innerHTML = '<small style="color:#e74c3c;">' + (e.message || e) + '</small>';
+    }
+  }
+  window.runResultsDiag = runResultsDiag;
 
   function renderResults(tallies) {
     const dash = document.getElementById('dashboard');
     lastData = tallies;
-    
+
     if (!tallies || Object.keys(tallies).length === 0) {
-      dash.innerHTML = `
-        <div class="no-data">
-          <i class="bi bi-inbox"></i>
-          <p>No voting data available yet.</p>
-        </div>
-      `;
+      dash.innerHTML = `<div class="no-data"><i class="bi bi-inbox"></i><p>No voting data available yet.</p></div>`;
       return;
     }
 
@@ -323,44 +222,31 @@
 
     Object.keys(tallies).forEach(pos => {
       const positionData = tallies[pos];
-      const candidates = Object.keys(positionData.candidates);
-      
+      const candidates = Object.keys(positionData.candidates || {});
+
       let topVotes = 0;
-      candidates.forEach(c => {
-        if (positionData.candidates[c].count > topVotes) {
-          topVotes = positionData.candidates[c].count;
-        }
-      });
+      candidates.forEach(c => { if ((positionData.candidates[c].count || 0) > topVotes) topVotes = positionData.candidates[c].count; });
 
       let html = `
         <div class="result-card">
           <div class="result-header">
-            <h3><i class="bi bi-trophy me-2" style="color:var(--hotel-gold);"></i>${pos}</h3>
-            <span class="total-badge">
-              <i class="bi bi-people me-1"></i>${candidates.length} candidate${candidates.length > 1 ? 's' : ''} • ${positionData.totalVotes} votes
-            </span>
+            <h3><i class="bi bi-trophy me-2" style="color:var(--hotel-gold);"></i>${escapeHTML(pos)}</h3>
+            <span class="total-badge"><i class="bi bi-people me-1"></i>${candidates.length} candidate${candidates.length > 1 ? 's' : ''} • ${positionData.totalVotes || 0} votes</span>
           </div>
       `;
 
       candidates.forEach(candName => {
         const cand = positionData.candidates[candName];
-        const percent = positionData.totalVotes > 0 
-          ? ((cand.count / positionData.totalVotes) * 100).toFixed(1) 
-          : 0;
+        const percent = positionData.totalVotes > 0 ? ((cand.count / positionData.totalVotes) * 100).toFixed(1) : 0;
         const isTop = cand.count === topVotes && topVotes > 0;
 
         html += `
           <div class="candidate-result ${isTop ? 'top-performer' : ''}">
-            <img src="${cand.img || 'https://via.placeholder.com/64'}" class="avatar" alt="${candName}">
+            <img src="${cand.img || 'https://via.placeholder.com/64'}" class="avatar" alt="${escapeAttr(candName)}">
             <div class="result-info">
-              <div class="cand-name">
-                ${candName}
-                ${isTop ? '<i class="bi bi-crown ms-2" style="color:var(--hotel-gold);"></i>' : ''}
-              </div>
-              <div class="cand-program"><i class="bi bi-book me-1"></i>${cand.program}</div>
-              <div class="progress-hotel">
-                <div class="progress-bar" style="width: ${percent}%;"></div>
-              </div>
+              <div class="cand-name">${escapeHTML(candName)}${isTop ? '<i class="bi bi-crown ms-2" style="color:var(--hotel-gold);"></i>' : ''}</div>
+              <div class="cand-program"><i class="bi bi-book me-1"></i>${escapeHTML(cand.program || '')}</div>
+              <div class="progress-hotel"><div class="progress-bar" style="width: ${percent}%;"></div></div>
             </div>
             <div class="result-stats">
               <div class="votes">${cand.count}</div>
@@ -370,24 +256,15 @@
         `;
       });
 
-      // Show "Vote for None" count if it exists
       if (positionData.noneCount && positionData.noneCount > 0) {
-        const nonePercent = positionData.totalVotes > 0 
-          ? ((positionData.noneCount / positionData.totalVotes) * 100).toFixed(1) 
-          : 0;
+        const nonePercent = positionData.totalVotes > 0 ? ((positionData.noneCount / positionData.totalVotes) * 100).toFixed(1) : 0;
         html += `
           <div class="candidate-result vote-none-row">
-            <div class="avatar" style="display:flex;align-items:center;justify-content:center;background:rgba(231,76,60,0.1);font-size:1.5rem;color:#e74c3c;">
-              <i class="bi bi-x-circle"></i>
-            </div>
+            <div class="avatar" style="display:flex;align-items:center;justify-content:center;background:rgba(231,76,60,0.1);font-size:1.5rem;color:#e74c3c;"><i class="bi bi-x-circle"></i></div>
             <div class="result-info">
-              <div class="cand-name" style="color:#e74c3c;">
-                Voted None (Abstained)
-              </div>
+              <div class="cand-name" style="color:#e74c3c;">Voted None (Abstained)</div>
               <div class="cand-program">Voter chose not to vote</div>
-              <div class="progress-hotel">
-                <div class="progress-bar" style="width: ${nonePercent}%;background:linear-gradient(90deg,#e74c3c,#c0392b);"></div>
-              </div>
+              <div class="progress-hotel"><div class="progress-bar" style="width: ${nonePercent}%;background:linear-gradient(90deg,#e74c3c,#c0392b);"></div></div>
             </div>
             <div class="result-stats">
               <div class="votes">${positionData.noneCount}</div>
@@ -402,8 +279,13 @@
     });
   }
 
-  // Auto-refresh every 5 seconds
-  setInterval(fetchTally, 5000);
+  // Auto-refresh with backoff on failure
+  function scheduleNext(delay) {
+    if (window._tallyInterval) clearInterval(window._tallyInterval);
+    window._tallyInterval = setInterval(fetchTally, delay);
+  }
+
+  window._tallyInterval = setInterval(fetchTally, 5000);
   window.onload = fetchTally;
 </script>
 </body>
