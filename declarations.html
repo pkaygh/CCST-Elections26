@@ -2,190 +2,261 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>CCST Elections — SRC Executive Declaration</title>
+  <title>CCST Elections — Declaration of Results</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600;700&display=swap');
     :root { --hotel-gold: #C9A84C; --hotel-dark: #1A1A2E; --hotel-border-radius: 16px; }
     * { font-family: 'Inter', sans-serif; }
     body { background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); min-height: 100vh; padding: 2rem; }
-    .hotel-container { max-width: 1000px; margin: 0 auto; }
+    .hotel-container { max-width: 960px; margin: 0 auto; }
+    .hotel-header { text-align: center; padding: 2.5rem 2rem; background: linear-gradient(145deg, rgba(26,26,46,0.95), rgba(22,33,62,0.95)); border-radius: var(--hotel-border-radius); border: 1px solid rgba(201,168,76,0.2); box-shadow: 0 8px 32px rgba(0,0,0,0.12); margin-bottom: 2rem; position: relative; overflow: hidden; }
+    .hotel-header::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9a84c' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); opacity: 0.3; }
+    .hotel-header .logo-icon { font-size: 3rem; color: var(--hotel-gold); margin-bottom: 0.5rem; }
+    .hotel-header h1 { font-family: 'Playfair Display', serif; color: #fff; font-size: 2.4rem; font-weight: 700; letter-spacing: 2px; position: relative; }
+    .hotel-header h1 span { color: var(--hotel-gold); }
+    .hotel-header .subtitle { color: rgba(255,255,255,0.6); font-size: 0.9rem; letter-spacing: 4px; text-transform: uppercase; position: relative; }
+    .gold-divider { width: 80px; height: 2px; background: linear-gradient(90deg, transparent, var(--hotel-gold), transparent); margin: 0.8rem auto; }
+    .declaration-badge { display: inline-block; background: var(--hotel-gold); color: #1A1A2E; padding: 0.4rem 1.8rem; border-radius: 50px; font-size: 0.8rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-top: 0.5rem; }
+    .result-card { background: rgba(255,255,255,0.05); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--hotel-border-radius); padding: 1.8rem; margin-bottom: 2rem; box-shadow: 0 8px 32px rgba(0,0,0,0.12); }
+    .result-card .result-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.06); margin-bottom: 1.2rem; flex-wrap: wrap; gap: 0.5rem; }
+    .result-card .result-header h3 { font-family: 'Playfair Display', serif; color: #fff; font-size: 1.3rem; margin: 0; }
+    .result-card .result-header .total-badge { background: rgba(201,168,76,0.15); color: var(--hotel-gold); padding: 0.3rem 1rem; border-radius: 50px; font-size: 0.8rem; }
+    .candidate-result { display: flex; align-items: center; gap: 1rem; padding: 0.8rem; border-radius: 12px; margin-bottom: 0.6rem; transition: all 0.3s ease; background: rgba(255,255,255,0.03); }
+    .candidate-result:hover { background: rgba(255,255,255,0.06); }
+    .candidate-result .avatar { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(201,168,76,0.2); flex-shrink: 0; }
+    .candidate-result .result-info { flex: 1; }
+    .candidate-result .result-info .cand-name { color: #fff; font-weight: 500; font-size: 0.95rem; }
+    .candidate-result .result-info .cand-program { color: rgba(255,255,255,0.4); font-size: 0.8rem; }
+    .candidate-result .result-stats { text-align: right; flex-shrink: 0; }
+    .candidate-result .result-stats .votes { color: var(--hotel-gold); font-weight: 600; font-size: 1rem; }
+    .candidate-result .result-stats .percent { color: rgba(255,255,255,0.4); font-size: 0.8rem; }
+    .progress-hotel { height: 6px; background: rgba(255,255,255,0.06); border-radius: 10px; overflow: hidden; margin-top: 4px; }
+    .progress-hotel .progress-bar { height: 100%; border-radius: 10px; background: linear-gradient(90deg, var(--hotel-gold), #e8c84c); transition: width 0.5s ease; }
+    .top-performer { border-left: 3px solid var(--hotel-gold); background: rgba(201,168,76,0.06); }
+    .vice-performer { border-left: 3px solid #3498db; background: rgba(52,152,219,0.06); }
+    .vote-none-row { border-left: 3px solid #e74c3c; background: rgba(231,76,60,0.05); }
+    .vote-none-row .votes { color: #e74c3c !important; }
+    .winner-ribbon { font-size: 0.7rem; background: var(--hotel-gold); color: #1A1A2E; padding: 0.1rem 0.8rem; border-radius: 50px; font-weight: 700; margin-left: 0.6rem; display: inline-block; text-transform: uppercase; letter-spacing: 0.5px; }
+    .vice-ribbon { font-size: 0.7rem; background: #3498db; color: #fff; padding: 0.1rem 0.8rem; border-radius: 50px; font-weight: 700; margin-left: 0.6rem; display: inline-block; text-transform: uppercase; letter-spacing: 0.5px; }
+    .summary-footer { text-align: center; padding: 1.5rem; background: rgba(255,255,255,0.03); border-radius: var(--hotel-border-radius); border: 1px solid rgba(255,255,255,0.05); margin-top: 1rem; }
+    .summary-footer .big-number { font-size: 2.5rem; font-weight: 700; color: var(--hotel-gold); font-family: 'Playfair Display', serif; }
+    .summary-footer .label { color: rgba(255,255,255,0.4); font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; }
+    .declared-stamp { display: inline-block; background: rgba(46,204,113,0.15); border: 1px solid rgba(46,204,113,0.3); color: #2ecc71; padding: 0.3rem 1.5rem; border-radius: 50px; font-size: 0.75rem; font-weight: 600; letter-spacing: 1px; }
+    .loading-spinner { display: flex; justify-content: center; align-items: center; padding: 4rem 0; color: rgba(255,255,255,0.3); }
+    .loading-spinner i { font-size: 2.5rem; animation: spin 1s linear infinite; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .no-data { text-align: center; padding: 4rem 0; color: rgba(255,255,255,0.2); }
+    .no-data i { font-size: 3rem; display: block; margin-bottom: 1rem; }
+    .error-help { background: rgba(231,76,60,0.08); border: 1px solid rgba(231,76,60,0.3); border-radius: 12px; padding: 1rem 1.2rem; color: rgba(255,255,255,0.85); font-size: 0.85rem; line-height: 1.5; text-align: left; margin-top: 1rem; }
+    .error-help code { background: rgba(0,0,0,0.4); padding: 1px 6px; border-radius: 4px; font-size: 0.85em; color: #ffd; }
 
-    .celebration-banner { 
+    .congrats-banner {
       background: linear-gradient(135deg, rgba(201,168,76,0.15), rgba(201,168,76,0.05));
-      border: 2px solid var(--hotel-gold);
+      border: 2px solid rgba(201,168,76,0.4);
       border-radius: var(--hotel-border-radius);
-      padding: 2rem 2rem 1.5rem;
+      padding: 2rem;
       margin-bottom: 2rem;
       text-align: center;
       position: relative;
       overflow: hidden;
-      animation: glowPulse 3s ease-in-out infinite;
+      animation: bannerPulse 3s ease-in-out infinite;
     }
-    .celebration-banner::before {
-      content: '🏆';
+    .congrats-banner::before {
+      content: '';
       position: absolute;
-      font-size: 8rem;
-      opacity: 0.05;
-      top: -20px;
-      right: -20px;
-      transform: rotate(15deg);
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(201,168,76,0.1) 0%, transparent 70%);
+      animation: rotateGlow 10s linear infinite;
     }
-    .celebration-banner::after {
-      content: '🎉';
-      position: absolute;
-      font-size: 6rem;
-      opacity: 0.05;
-      bottom: -10px;
-      left: -10px;
-      transform: rotate(-10deg);
+    @keyframes bannerPulse {
+      0%, 100% { box-shadow: 0 0 20px rgba(201,168,76,0.1); }
+      50% { box-shadow: 0 0 40px rgba(201,168,76,0.25); }
     }
-    @keyframes glowPulse {
-      0%, 100% { box-shadow: 0 0 30px rgba(201,168,76,0.1); }
-      50% { box-shadow: 0 0 60px rgba(201,168,76,0.2); }
+    @keyframes rotateGlow {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
-    .celebration-banner .crown-icon { font-size: 3rem; color: var(--hotel-gold); display: block; margin-bottom: 0.2rem; }
-    .celebration-banner h2 { 
-      font-family: 'Playfair Display', serif; 
-      color: #fff; 
-      font-size: 2.2rem; 
-      font-weight: 900;
-      letter-spacing: 1px;
-    }
-    .celebration-banner h2 span { color: var(--hotel-gold); }
-    .celebration-banner .sub-celebrate { 
-      color: rgba(255,255,255,0.6); 
-      font-size: 1rem; 
-      letter-spacing: 3px; 
-      text-transform: uppercase;
-    }
-    .celebration-banner .confetti-line {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      margin-top: 0.8rem;
-      font-size: 1.5rem;
-    }
-
-    .hotel-header { text-align: center; padding: 2rem 2rem; background: linear-gradient(145deg, rgba(26,26,46,0.95), rgba(22,33,62,0.95)); border-radius: var(--hotel-border-radius); border: 1px solid rgba(201,168,76,0.2); box-shadow: 0 8px 32px rgba(0,0,0,0.12); margin-bottom: 2rem; position: relative; overflow: hidden; }
-    .hotel-header::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9a84c' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); opacity: 0.3; }
-    .hotel-header .logo-icon { font-size: 2.5rem; color: var(--hotel-gold); margin-bottom: 0.3rem; }
-    .hotel-header h1 { font-family: 'Playfair Display', serif; color: #fff; font-size: 2rem; font-weight: 700; letter-spacing: 2px; position: relative; }
-    .hotel-header h1 span { color: var(--hotel-gold); }
-    .hotel-header .subtitle { color: rgba(255,255,255,0.5); font-size: 0.8rem; letter-spacing: 4px; text-transform: uppercase; position: relative; }
-    .gold-divider { width: 60px; height: 2px; background: linear-gradient(90deg, transparent, var(--hotel-gold), transparent); margin: 0.5rem auto; }
-
-    .result-card { background: rgba(255,255,255,0.05); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--hotel-border-radius); padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 8px 32px rgba(0,0,0,0.12); }
-    .result-card .result-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.8rem; border-bottom: 1px solid rgba(255,255,255,0.06); margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem; }
-    .result-card .result-header h3 { font-family: 'Playfair Display', serif; color: #fff; font-size: 1.2rem; margin: 0; }
-    .result-card .result-header .total-badge { background: rgba(201,168,76,0.15); color: var(--hotel-gold); padding: 0.2rem 0.8rem; border-radius: 50px; font-size: 0.7rem; }
-
-    .candidate-result { display: flex; align-items: center; gap: 1rem; padding: 0.6rem 0.8rem; border-radius: 12px; margin-bottom: 0.4rem; transition: all 0.3s ease; background: rgba(255,255,255,0.03); }
-    .candidate-result:hover { background: rgba(255,255,255,0.06); }
-    .candidate-result .avatar { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(201,168,76,0.2); flex-shrink: 0; }
-    .candidate-result .result-info { flex: 1; }
-    .candidate-result .result-info .cand-name { color: #fff; font-weight: 500; font-size: 0.9rem; }
-    .candidate-result .result-info .cand-program { color: rgba(255,255,255,0.4); font-size: 0.75rem; }
-    .candidate-result .result-stats { text-align: right; flex-shrink: 0; min-width: 70px; }
-    .candidate-result .result-stats .votes { color: var(--hotel-gold); font-weight: 600; font-size: 0.95rem; }
-    .candidate-result .result-stats .percent { color: rgba(255,255,255,0.4); font-size: 0.7rem; }
-    .progress-hotel { height: 4px; background: rgba(255,255,255,0.06); border-radius: 10px; overflow: hidden; margin-top: 3px; }
-    .progress-hotel .progress-bar { height: 100%; border-radius: 10px; background: linear-gradient(90deg, var(--hotel-gold), #e8c84c); transition: width 0.5s ease; }
-
-    .winner-row { 
-      border-left: 4px solid var(--hotel-gold); 
-      background: rgba(201,168,76,0.08);
-      padding: 0.8rem 1rem;
-      border-radius: 12px;
-      margin-bottom: 0.4rem;
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-    .winner-row .winner-badge { 
-      background: var(--hotel-gold); 
-      color: #1A1A2E; 
-      padding: 0.15rem 0.8rem; 
-      border-radius: 50px; 
-      font-size: 0.6rem; 
+    .congrats-banner .banner-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      color: var(--hotel-gold);
       font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      margin-bottom: 0.5rem;
+      position: relative;
+      text-shadow: 0 2px 10px rgba(201,168,76,0.3);
     }
-    .winner-row .avatar { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; border: 2px solid var(--hotel-gold); flex-shrink: 0; }
-    .winner-row .cand-name { color: #fff; font-weight: 600; font-size: 1rem; }
-    .winner-row .cand-program { color: rgba(255,255,255,0.4); font-size: 0.75rem; }
-    .winner-row .result-stats .votes { color: var(--hotel-gold); font-weight: 700; font-size: 1.1rem; }
-
-    .executive-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
-    .executive-card { 
-      background: rgba(255,255,255,0.04); 
-      border: 1px solid rgba(255,255,255,0.06); 
-      border-radius: 14px; 
-      padding: 1.2rem; 
+    .congrats-banner .banner-subtitle {
+      color: rgba(255,255,255,0.7);
+      font-size: 0.9rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+    .exec-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      position: relative;
+    }
+    .exec-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(201,168,76,0.2);
+      border-radius: 12px;
+      padding: 1rem;
       text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .exec-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(201,168,76,0.15);
+      border-color: rgba(201,168,76,0.4);
+    }
+    .exec-card .exec-avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--hotel-gold);
+      margin-bottom: 0.6rem;
+      box-shadow: 0 4px 12px rgba(201,168,76,0.2);
+    }
+    .exec-card .exec-name {
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-bottom: 0.2rem;
+    }
+    .exec-card .exec-role {
+      color: var(--hotel-gold);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .exec-card .exec-votes {
+      color: rgba(255,255,255,0.4);
+      font-size: 0.7rem;
+      margin-top: 0.3rem;
+    }
+    .confetti-piece {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: var(--hotel-gold);
+      opacity: 0.6;
+      animation: confettiFall 4s linear infinite;
+    }
+    @keyframes confettiFall {
+      0% { transform: translateY(-20px) rotate(0deg); opacity: 0; }
+      10% { opacity: 0.6; }
+      90% { opacity: 0.6; }
+      100% { transform: translateY(300px) rotate(720deg); opacity: 0; }
+    }
+
+    .demo-btn {
+      background: rgba(201,168,76,0.15);
+      border: 1px solid rgba(201,168,76,0.4);
+      color: var(--hotel-gold);
+      padding: 0.5rem 1.5rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 0.5rem;
+    }
+    .demo-btn:hover {
+      background: rgba(201,168,76,0.25);
+    }
+    .btn-secondary-sm {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #fff;
+      padding: 0.4rem 1.2rem;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      cursor: pointer;
       transition: all 0.3s ease;
     }
-    .executive-card:hover { transform: translateY(-3px); border-color: rgba(201,168,76,0.2); }
-    .executive-card .exec-avatar { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid var(--hotel-gold); margin: 0 auto 0.5rem; display: block; }
-    .executive-card .exec-name { color: #fff; font-weight: 600; font-size: 1rem; }
-    .executive-card .exec-role { color: var(--hotel-gold); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
-    .executive-card .exec-program { color: rgba(255,255,255,0.3); font-size: 0.7rem; }
+    .btn-secondary-sm:hover {
+      background: rgba(255,255,255,0.15);
+    }
 
-    .loading-spinner { display: flex; justify-content: center; align-items: center; padding: 3rem 0; color: rgba(255,255,255,0.3); }
-    .loading-spinner i { font-size: 2rem; animation: spin 1s linear infinite; }
-    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    .no-data { text-align: center; padding: 3rem 0; color: rgba(255,255,255,0.2); }
-    .no-data i { font-size: 2.5rem; display: block; margin-bottom: 0.8rem; }
-    .btn-secondary-sm { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #fff; padding: 0.3rem 1rem; border-radius: 8px; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease; }
-    .btn-secondary-sm:hover { background: rgba(255,255,255,0.15); color: #fff; }
-
-    .declared-stamp { display: inline-block; background: rgba(46,204,113,0.15); border: 1px solid rgba(46,204,113,0.3); color: #2ecc71; padding: 0.2rem 1.2rem; border-radius: 50px; font-size: 0.7rem; font-weight: 600; letter-spacing: 1px; }
+    .demo-mode-banner {
+      background: rgba(243,156,18,0.15);
+      border: 1px solid rgba(243,156,18,0.4);
+      border-radius: 12px;
+      padding: 0.8rem 1.2rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .demo-mode-banner .demo-text {
+      color: #f39c12;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    .demo-mode-banner .demo-text i {
+      margin-right: 0.5rem;
+    }
 
     @media (max-width: 768px) { 
       body { padding: 1rem; } 
-      .celebration-banner h2 { font-size: 1.5rem; }
-      .celebration-banner { padding: 1.5rem 1rem; }
-      .executive-grid { grid-template-columns: repeat(2, 1fr); }
-      .winner-row { flex-wrap: wrap; }
+      .hotel-header h1 { font-size: 1.6rem; } 
+      .result-card { padding: 1rem; } 
+      .candidate-result { flex-wrap: wrap; } 
+      .candidate-result .result-stats { width: 100%; text-align: left; } 
+      .candidate-result .avatar { width: 48px; height: 48px; }
+      .congrats-banner .banner-title { font-size: 1.3rem; }
+      .exec-grid { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
     }
   </style>
+<base target="_blank">
 </head>
 <body>
 
 <div class="hotel-container">
-  <!-- Celebration Banner -->
-  <div class="celebration-banner" id="celebrationBanner" style="display:none;">
-    <span class="crown-icon"><i class="bi bi-trophy-fill"></i></span>
-    <h2>🎊 CONGRATULATIONS <span>SRC EXECUTIVES</span> 🎊</h2>
-    <div class="gold-divider"></div>
-    <p class="sub-celebrate">The newly elected student leaders of CCST</p>
-    <div class="confetti-line">🎉 🏅 🎊 🏆 🎉</div>
-  </div>
-
   <div class="hotel-header">
     <div class="logo-icon"><i class="bi bi-building"></i></div>
     <h1>CCST <span>Elections</span></h1>
     <div class="gold-divider"></div>
     <p class="subtitle">Official Declaration of Results</p>
-    <div style="margin-top:0.8rem;">
-      <span class="declared-stamp"><i class="bi bi-check-circle me-1"></i>Declared</span>
+    <div style="margin-top:1rem;">
+      <span class="declaration-badge"><i class="bi bi-megaphone me-2"></i>Final Results</span>
+      <span class="declared-stamp ms-2"><i class="bi bi-check-circle me-1"></i>Declared</span>
     </div>
   </div>
 
-  <!-- Executive Team Display -->
-  <div id="executiveTeam" style="display:none;">
-    <div class="result-card" style="border: 1px solid rgba(201,168,76,0.15);">
-      <div class="result-header">
-        <h3><i class="bi bi-people-fill me-2" style="color:var(--hotel-gold);"></i>New SRC Executive Team</h3>
-        <span class="total-badge"><i class="bi bi-star-fill me-1"></i>Elected</span>
-      </div>
-      <div class="executive-grid" id="executiveGrid"></div>
+  <div id="demoBanner" style="display:none;">
+    <div class="demo-mode-banner">
+      <span class="demo-text"><i class="bi bi-eye"></i> Showing demo layout — live data unavailable</span>
+      <button class="btn-secondary-sm" onclick="fetchDeclaration(true)" style="width:auto;">
+        <i class="bi bi-arrow-repeat me-1"></i>Load Live Data
+      </button>
     </div>
   </div>
 
-  <!-- Full Results -->
+  <div id="congratsBanner" style="display:none;">
+    <div class="congrats-banner">
+      <div style="position:absolute;top:10px;left:10%;" class="confetti-piece"></div>
+      <div style="position:absolute;top:10px;left:30%;" class="confetti-piece" style="animation-delay:0.5s;"></div>
+      <div style="position:absolute;top:10px;left:50%;" class="confetti-piece" style="animation-delay:1s;"></div>
+      <div style="position:absolute;top:10px;left:70%;" class="confetti-piece" style="animation-delay:1.5s;"></div>
+      <div style="position:absolute;top:10px;left:90%;" class="confetti-piece" style="animation-delay:2s;"></div>
+      <div class="banner-title"><i class="bi bi-stars me-2"></i>Congratulations!</div>
+      <div class="banner-subtitle">New SRC Executive Team 2026/2027</div>
+      <div class="exec-grid" id="execGrid"></div>
+    </div>
+  </div>
+
   <div id="declarationContainer">
     <div class="loading-spinner">
       <i class="bi bi-hourglass-split"></i>
@@ -193,209 +264,241 @@
     </div>
   </div>
 
-  <div class="summary-footer" id="summaryFooter" style="display:none; text-align:center; padding:1.2rem; background:rgba(255,255,255,0.03); border-radius:var(--hotel-border-radius); border:1px solid rgba(255,255,255,0.05); margin-top:1rem;">
-    <div><span style="color:rgba(255,255,255,0.4); font-size:0.8rem; letter-spacing:2px; text-transform:uppercase;">Total valid votes cast</span></div>
-    <div style="font-size:2rem; font-weight:700; color:var(--hotel-gold); font-family:'Playfair Display',serif;" id="totalVotesDisplay">0</div>
-    <div style="margin-top:0.3rem; color: rgba(255,255,255,0.15); font-size:0.65rem; letter-spacing:1px;">
+  <div class="summary-footer" id="summaryFooter" style="display:none;">
+    <div><span class="label">Total valid votes cast</span></div>
+    <div class="big-number" id="totalVotesDisplay">0</div>
+    <div style="margin-top:0.4rem; color: rgba(255,255,255,0.2); font-size:0.7rem; letter-spacing:1px;">
       <i class="bi bi-dot"></i> certified by the electoral commission <i class="bi bi-dot"></i>
     </div>
   </div>
 </div>
 
 <script>
-  // Your backend URL - update this with your deployed Apps Script URL
-  var API_URL = 'https://script.google.com/macros/s/AKfycbzcJ5IxMAUS3xKq3UPDve5wJ8SSVYCkJyy4mvVh2s6HLp9habmuh3ZoZsmpposHrOhTFA/exec';
+  var CONFIG = {
+    API_URL: 'https://script.google.com/macros/s/AKfycbzcJ5IxMAUS3xKq3UPDve5wJ8SSVYCkJyy4mvVh2s6HLp9habmuh3ZoZsmpposHrOhTFA/exec',
+    TIMEOUT_MS: 15000,
+    DEBUG: true
+  };
+</script>
+<script src="api.js?v=2"></script>
+<script>
+  function escapeHTML(s) { return String(s == null ? '' : s).replace(/[&<"']/g, c => ({'&':'&amp;','<':'&lt;','"':'&quot;',"'":'&#39;'}[c])); }
+  function escapeAttr(s) { return escapeHTML(s).replace(/'/g, '&#39;'); }
 
-  function escapeHTML(s) { 
-    return String(s == null ? '' : s).replace(/[&<"']/g, function(c) {
-      return {'&':'&amp;','<':'&lt;','"':'&quot;',"'":'&#39;'}[c];
+  async function fetchDeclaration(skipDemoFallback) {
+    const container = document.getElementById('declarationContainer');
+    document.getElementById('demoBanner').style.display = 'none';
+    container.innerHTML = '<div class="loading-spinner"><i class="bi bi-hourglass-split"></i><span style="margin-left:1rem;">Loading declaration...</span></div>';
+
+    const timeoutMs = 10000;
+    const timeoutPromise = new Promise(function(_, reject) {
+      setTimeout(function() {
+        reject(new Error('Request timed out after ' + timeoutMs/1000 + ' seconds. The server is not responding.'));
+      }, timeoutMs);
     });
-  }
-  
-  function escapeAttr(s) { 
-    return escapeHTML(s).replace(/'/g, '&#39;'); 
-  }
 
-  function getDisplayName(pos) {
-    var names = {
-      'president': 'President',
-      'vice president': 'Vice President',
-      'vice-president': 'Vice President',
-      'secretary': 'Secretary',
-      'treasurer': 'Treasurer',
-      'organizer': 'Organizer',
-      'welfare': 'Welfare Officer',
-      'sports': 'Sports Director',
-      'academic': 'Academic Affairs'
-    };
-    var lower = pos.toLowerCase().trim();
-    return names[lower] || pos;
-  }
-
-  async function fetchDeclaration() {
-    var container = document.getElementById('declarationContainer');
     try {
-      var url = API_URL + '?action=getRealtimeTally&t=' + Date.now();
-      console.log('Fetching from:', url);
-      
-      var response = await fetch(url, {
-        method: 'GET',
-        mode: 'cors',
-        headers: { 'Content-Type': 'application/json' }
-      });
-      
-      if (!response.ok) {
-        throw new Error('HTTP error! status: ' + response.status);
+      if (typeof getRealtimeTally !== 'function') {
+        throw new Error('api.js did not load. Make sure api.js is in the same folder and hard-refresh (Ctrl+F5).');
       }
-      
-      var data = await response.json();
-      console.log('API Response:', data);
-      
-      if (data && data.success && data.data) {
-        renderDeclaration(data.data);
+      const result = await Promise.race([getRealtimeTally(), timeoutPromise]);
+      if (result && result.success) {
+        renderDeclaration(result.data);
       } else {
-        container.innerHTML = renderError((data && data.message) || 'Could not fetch final tally.');
+        throw new Error((result && result.message) || 'API returned no data.');
       }
-    } catch (error) {
-      console.error('Error:', error);
-      container.innerHTML = renderError(error.message || String(error));
+    } catch (e) {
+      container.innerHTML = renderError(e.message || String(e));
+      if (!skipDemoFallback) {
+        setTimeout(function() {
+          loadDemoData();
+          document.getElementById('demoBanner').style.display = 'block';
+        }, 800);
+      }
     }
   }
 
   function renderError(message) {
-    var safe = String(message || '').replace(/[<>&]/g, function(c) {
-      return {'<':'&lt;','>':'&gt;','&':'&amp;'}[c];
-    });
-    return '<div class="result-card" style="text-align:center;padding:2rem;">' +
-      '<i class="bi bi-exclamation-triangle" style="font-size:3rem;color:#e74c3c;display:block;margin-bottom:1rem;"></i>' +
-      '<h5 style="color:#fff;margin-bottom:0.5rem;">Cannot load declaration</h5>' +
-      '<p style="color:rgba(255,255,255,0.7);">' + safe.replace(/\n/g,'<br>') + '</p>' +
-      '<button class="btn-secondary-sm" onclick="fetchDeclaration()"><i class="bi bi-arrow-repeat me-1"></i>Retry</button>' +
-      '<div style="margin-top:1rem;color:rgba(255,255,255,0.3);font-size:0.7rem;">Make sure your backend is deployed and accessible.</div></div>';
+    const safe = String(message || '').replace(/[<>&]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]));
+    return `
+      <div class="result-card" style="text-align:center;padding:2rem;">
+        <i class="bi bi-exclamation-triangle" style="font-size:3rem;color:#e74c3c;display:block;margin-bottom:1rem;"></i>
+        <h5 style="color:#fff;margin-bottom:0.5rem;">Cannot load live declaration</h5>
+        <p style="color:rgba(255,255,255,0.7);">${safe.replace(/\n/g, '<br>')}</p>
+        <button class="btn-secondary-sm" onclick="fetchDeclaration(true)"><i class="bi bi-arrow-repeat me-1"></i>Retry Live Data</button>
+        <br>
+        <button class="demo-btn" onclick="loadDemoData();document.getElementById('demoBanner').style.display='block';"><i class="bi bi-eye me-1"></i>Show Demo Layout</button>
+        <div class="error-help" style="margin-top:1rem;text-align:left;">
+          <strong style="color:#e74c3c;"><i class="bi bi-wrench me-1"></i>Quick fixes:</strong><br>
+          1. <strong>Hard-refresh this page</strong> (Ctrl+F5 or Cmd+Shift+R) to clear old cached code.<br>
+          2. Make sure <code>api.js</code> is in the same folder as this file.<br>
+          3. Open browser console (F12 &rarr; Console) and look for red errors.<br>
+          4. If results.html works but this does not, copy the URL from results.html CONFIG.
+        </div>
+      </div>`;
+  }
+
+  function loadDemoData() {
+    var demoData = {
+      "President": {
+        totalVotes: 245,
+        noneCount: 12,
+        candidates: {
+          "Kwame Asante": { count: 98, program: "BSc Computer Science", img: "https://i.pravatar.cc/150?u=kwame" },
+          "Ama Serwaa": { count: 87, program: "BSc Information Technology", img: "https://i.pravatar.cc/150?u=ama" },
+          "Kofi Mensah": { count: 48, program: "BSc Software Engineering", img: "https://i.pravatar.cc/150?u=kofi" }
+        }
+      },
+      "General Secretary": {
+        totalVotes: 233,
+        noneCount: 8,
+        candidates: {
+          "Abena Osei": { count: 120, program: "BSc Computer Science", img: "https://i.pravatar.cc/150?u=abena" },
+          "Yaw Boateng": { count: 105, program: "BSc IT", img: "https://i.pravatar.cc/150?u=yaw" }
+        }
+      },
+      "Financial Secretary": {
+        totalVotes: 228,
+        noneCount: 15,
+        candidates: {
+          "Efua Danso": { count: 130, program: "BSc Accounting", img: "https://i.pravatar.cc/150?u=efua" },
+          "Kwesi Arhin": { count: 83, program: "BSc Finance", img: "https://i.pravatar.cc/150?u=kwesi" }
+        }
+      },
+      "Public Relations Officer": {
+        totalVotes: 235,
+        noneCount: 10,
+        candidates: {
+          "Nana Akosua": { count: 140, program: "BSc Marketing", img: "https://i.pravatar.cc/150?u=nana" },
+          "Kojo Addo": { count: 85, program: "BSc Communication", img: "https://i.pravatar.cc/150?u=kojo" }
+        }
+      },
+      "Organizing Secretary": {
+        totalVotes: 230,
+        noneCount: 5,
+        candidates: {
+          "Akua Frimpong": { count: 125, program: "BSc HR", img: "https://i.pravatar.cc/150?u=akua" },
+          "Yaw Kumi": { count: 100, program: "BSc Management", img: "https://i.pravatar.cc/150?u=yawkumi" }
+        }
+      }
+    };
+    renderDeclaration(demoData);
+  }
+
+  function getCandidatesArray(positionData) {
+    const candidates = Object.keys(positionData.candidates || {});
+    return candidates.map(candName => ({
+      name: candName,
+      ...positionData.candidates[candName]
+    })).sort((a, b) => (b.count || 0) - (a.count || 0));
   }
 
   function renderDeclaration(tallies) {
-    var container = document.getElementById('declarationContainer');
-    var footer = document.getElementById('summaryFooter');
-    var banner = document.getElementById('celebrationBanner');
-    var execTeam = document.getElementById('executiveTeam');
-
-    console.log('Rendering declaration with data:', tallies);
+    const container = document.getElementById('declarationContainer');
+    const footer = document.getElementById('summaryFooter');
+    const banner = document.getElementById('congratsBanner');
+    const execGrid = document.getElementById('execGrid');
 
     if (!tallies || Object.keys(tallies).length === 0) {
       container.innerHTML = '<div class="no-data"><i class="bi bi-inbox"></i><p>No voting data to declare.</p></div>';
       footer.style.display = 'none';
       banner.style.display = 'none';
-      execTeam.style.display = 'none';
       return;
     }
 
-    var grandTotal = 0;
-    var html = '';
-    var winners = {};
+    let grandTotal = 0;
+    let html = '';
+    let executives = [];
 
-    // Process each position
-    var positionKeys = Object.keys(tallies);
-    
-    positionKeys.forEach(function(pos) {
-      var positionData = tallies[pos];
-      var candidates = Object.keys(positionData.candidates || {});
-      
-      // Calculate totals and find winner
-      var topVotes = 0;
-      var winnerName = null;
-      var allVotes = [];
-      
-      candidates.forEach(function(c) {
-        var count = positionData.candidates[c].count || 0;
-        allVotes.push({ name: c, count: count, data: positionData.candidates[c] });
-        if (count > topVotes) {
-          topVotes = count;
-          winnerName = c;
+    Object.keys(tallies).forEach(pos => {
+      const positionData = tallies[pos];
+      const sortedCandidates = getCandidatesArray(positionData);
+      const candidates = Object.keys(positionData.candidates || {});
+
+      let topVotes = 0;
+      let secondTopVotes = 0;
+
+      if (sortedCandidates.length > 0) topVotes = sortedCandidates[0].count || 0;
+      if (sortedCandidates.length > 1) secondTopVotes = sortedCandidates[1].count || 0;
+
+      grandTotal += (positionData.totalVotes || 0);
+
+      html += `<div class="result-card">
+        <div class="result-header">
+          <h3><i class="bi bi-trophy me-2" style="color:var(--hotel-gold);"></i>${escapeHTML(pos)}</h3>
+          <span class="total-badge"><i class="bi bi-people me-1"></i>${candidates.length} candidate${candidates.length > 1 ? 's' : ''} &bull; ${positionData.totalVotes || 0} votes</span>
+        </div>`;
+
+      const isPresident = pos.toLowerCase().includes('president');
+
+      candidates.forEach(candName => {
+        const cand = positionData.candidates[candName];
+        const percent = positionData.totalVotes > 0 ? ((cand.count / positionData.totalVotes) * 100).toFixed(1) : 0;
+        const isTop = cand.count === topVotes && topVotes > 0;
+        const isSecond = cand.count === secondTopVotes && secondTopVotes > 0 && isPresident;
+
+        const isWinner = isTop || (isPresident && isSecond);
+        const winnerLabel = isTop ? (isPresident ? 'President' : 'Winner') : (isSecond ? 'Vice President' : '');
+        const ribbonClass = isSecond ? 'vice-ribbon' : 'winner-ribbon';
+        const rowClass = isTop ? 'top-performer' : (isSecond ? 'vice-performer' : '');
+
+        html += `<div class="candidate-result ${rowClass}">
+          <img src="${cand.img || 'https://via.placeholder.com/64'}" class="avatar" alt="${escapeAttr(candName)}" onerror="this.src='https://via.placeholder.com/64?text=No+Image'">
+          <div class="result-info">
+            <div class="cand-name">${escapeHTML(candName)}${isWinner ? ` <span class="${ribbonClass}"><i class="bi bi-crown me-1"></i>${winnerLabel}</span>` : ''}</div>
+            <div class="cand-program"><i class="bi bi-book me-1"></i>${escapeHTML(cand.program || '')}</div>
+            <div class="progress-hotel"><div class="progress-bar" style="width: ${percent}%;"></div></div>
+          </div>
+          <div class="result-stats">
+            <div class="votes">${cand.count}</div>
+            <div class="percent">${percent}%</div>
+          </div>
+        </div>`;
+      });
+
+      if (isPresident) {
+        if (sortedCandidates.length > 0) {
+          executives.push({
+            name: sortedCandidates[0].name,
+            role: 'President',
+            img: sortedCandidates[0].img || 'https://via.placeholder.com/72',
+            votes: sortedCandidates[0].count || 0
+          });
         }
-      });
-      
-      // Sort by votes descending
-      allVotes.sort(function(a, b) {
-        return b.count - a.count;
-      });
-      
-      var totalVotes = positionData.totalVotes || 0;
-      grandTotal += totalVotes;
-      
-      // Store winner info
-      var posLower = pos.toLowerCase().trim();
-      if (winnerName) {
-        var winnerData = positionData.candidates[winnerName];
-        winners[posLower] = {
-          name: winnerName,
-          program: winnerData && winnerData.program ? winnerData.program : '',
-          img: winnerData && winnerData.img ? winnerData.img : 'https://via.placeholder.com/80',
-          votes: topVotes,
-          totalVotes: totalVotes,
-          displayName: getDisplayName(pos),
-          allVotes: allVotes
-        };
+        if (sortedCandidates.length > 1) {
+          executives.push({
+            name: sortedCandidates[1].name,
+            role: 'Vice President',
+            img: sortedCandidates[1].img || 'https://via.placeholder.com/72',
+            votes: sortedCandidates[1].count || 0
+          });
+        }
+      } else {
+        if (sortedCandidates.length > 0) {
+          executives.push({
+            name: sortedCandidates[0].name,
+            role: pos,
+            img: sortedCandidates[0].img || 'https://via.placeholder.com/72',
+            votes: sortedCandidates[0].count || 0
+          });
+        }
       }
 
-      // Build result card for this position
-      html += '<div class="result-card" id="position-' + escapeAttr(pos) + '">' +
-        '<div class="result-header">' +
-        '<h3><i class="bi bi-trophy me-2" style="color:var(--hotel-gold);"></i>' + escapeHTML(getDisplayName(pos)) + '</h3>' +
-        '<span class="total-badge"><i class="bi bi-people me-1"></i>' + 
-        candidates.length + ' candidate' + (candidates.length > 1 ? 's' : '') + 
-        ' &bull; ' + totalVotes + ' votes</span>' +
-        '</div>';
-
-      // Show winner prominently
-      if (winnerName && allVotes.length > 0) {
-        var winner = allVotes[0];
-        var percent = totalVotes > 0 ? ((winner.count / totalVotes) * 100).toFixed(1) : 0;
-        html += '<div class="winner-row">' +
-          '<img src="' + (winner.data && winner.data.img ? winner.data.img : 'https://via.placeholder.com/56') + '" class="avatar" alt="' + escapeAttr(winner.name) + '">' +
-          '<div style="flex:1;">' +
-          '<div class="cand-name">' + escapeHTML(winner.name) + ' <span class="winner-badge"><i class="bi bi-crown me-1"></i>WINNER</span></div>' +
-          '<div class="cand-program"><i class="bi bi-book me-1"></i>' + escapeHTML(winner.data && winner.data.program ? winner.data.program : '') + '</div>' +
-          '</div>' +
-          '<div class="result-stats">' +
-          '<div class="votes">' + winner.count + '</div>' +
-          '<div class="percent">' + percent + '%</div>' +
-          '</div></div>';
-      }
-
-      // Show other candidates
-      allVotes.forEach(function(cand, idx) {
-        if (idx === 0) return; // skip winner (already shown)
-        var percent = totalVotes > 0 ? ((cand.count / totalVotes) * 100).toFixed(1) : 0;
-        html += '<div class="candidate-result">' +
-          '<img src="' + (cand.data && cand.data.img ? cand.data.img : 'https://via.placeholder.com/56') + '" class="avatar" alt="' + escapeAttr(cand.name) + '">' +
-          '<div class="result-info">' +
-          '<div class="cand-name">' + escapeHTML(cand.name) + '</div>' +
-          '<div class="cand-program"><i class="bi bi-book me-1"></i>' + escapeHTML(cand.data && cand.data.program ? cand.data.program : '') + '</div>' +
-          '<div class="progress-hotel"><div class="progress-bar" style="width: ' + percent + '%;"></div></div>' +
-          '</div>' +
-          '<div class="result-stats">' +
-          '<div class="votes">' + cand.count + '</div>' +
-          '<div class="percent">' + percent + '%</div>' +
-          '</div></div>';
-      });
-
-      // Show "Vote for None" if present
       if (positionData.noneCount && positionData.noneCount > 0) {
-        var nonePercent = totalVotes > 0 ? ((positionData.noneCount / totalVotes) * 100).toFixed(1) : 0;
-        html += '<div class="candidate-result" style="border-left:3px solid #e74c3c;background:rgba(231,76,60,0.04);">' +
-          '<div style="width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(231,76,60,0.1);font-size:1.5rem;color:#e74c3c;flex-shrink:0;"><i class="bi bi-x-circle"></i></div>' +
-          '<div class="result-info">' +
-          '<div class="cand-name" style="color:#e74c3c;">Voted None (Abstained)</div>' +
-          '<div class="cand-program">Voter chose not to vote</div>' +
-          '<div class="progress-hotel"><div class="progress-bar" style="width: ' + nonePercent + '%;background:linear-gradient(90deg,#e74c3c,#c0392b);"></div></div>' +
-          '</div>' +
-          '<div class="result-stats">' +
-          '<div class="votes" style="color:#e74c3c;">' + positionData.noneCount + '</div>' +
-          '<div class="percent">' + nonePercent + '%</div>' +
-          '</div></div>';
+        const nonePercent = positionData.totalVotes > 0 ? ((positionData.noneCount / positionData.totalVotes) * 100).toFixed(1) : 0;
+        html += `<div class="candidate-result vote-none-row">
+          <div class="avatar" style="display:flex;align-items:center;justify-content:center;background:rgba(231,76,60,0.1);font-size:1.5rem;color:#e74c3c;"><i class="bi bi-x-circle"></i></div>
+          <div class="result-info">
+            <div class="cand-name" style="color:#e74c3c;">Voted None (Abstained)</div>
+            <div class="cand-program">Voter chose not to vote</div>
+            <div class="progress-hotel"><div class="progress-bar" style="width: ${nonePercent}%;background:linear-gradient(90deg,#e74c3c,#c0392b);"></div></div>
+          </div>
+          <div class="result-stats">
+            <div class="votes">${positionData.noneCount}</div>
+            <div class="percent">${nonePercent}%</div>
+          </div>
+        </div>`;
       }
-
       html += '</div>';
     });
 
@@ -403,114 +506,25 @@
     footer.style.display = 'block';
     document.getElementById('totalVotesDisplay').textContent = grandTotal;
 
-    // Show celebration banner and executive team
-    if (Object.keys(winners).length > 0) {
+    if (executives.length > 0) {
+      execGrid.innerHTML = executives.map(ex => 
+        `<div class="exec-card">
+          <img src="${ex.img || 'https://via.placeholder.com/72'}" class="exec-avatar" alt="${escapeAttr(ex.name)}" onerror="this.src='https://via.placeholder.com/72?text=No+Image'">
+          <div class="exec-name">${escapeHTML(ex.name)}</div>
+          <div class="exec-role">${escapeHTML(ex.role)}</div>
+          <div class="exec-votes"><i class="bi bi-check2-circle me-1"></i>${ex.votes} votes</div>
+        </div>`
+      ).join('');
       banner.style.display = 'block';
-      execTeam.style.display = 'block';
-      renderExecutiveTeam(winners);
     }
   }
 
-  function renderExecutiveTeam(winners) {
-    var grid = document.getElementById('executiveGrid');
-    if (!grid) return;
-
-    var execList = [];
-    
-    // Find President - look for any position containing "president"
-    var presidentKey = null;
-    var keys = Object.keys(winners);
-    for (var i = 0; i < keys.length; i++) {
-      if (keys[i].toLowerCase().indexOf('president') !== -1) {
-        presidentKey = keys[i];
-        break;
-      }
-    }
-    
-    var president = null;
-    var secondPlace = null;
-    
-    if (presidentKey && winners[presidentKey]) {
-      president = winners[presidentKey];
-      // Get second place from the president position
-      if (president.allVotes && president.allVotes.length > 1) {
-        secondPlace = president.allVotes[1];
-      }
-    }
-
-    // Add President first
-    if (president) {
-      var presObj = {
-        name: president.name,
-        program: president.program || '',
-        img: president.img || 'https://via.placeholder.com/80',
-        role: 'President',
-        isPresident: true
-      };
-      execList.push(presObj);
-      
-      // Add Vice President (second place from president position)
-      if (secondPlace) {
-        var vpObj = {
-          name: secondPlace.name,
-          program: secondPlace.data && secondPlace.data.program ? secondPlace.data.program : '',
-          img: secondPlace.data && secondPlace.data.img ? secondPlace.data.img : 'https://via.placeholder.com/80',
-          role: 'Vice President',
-          isVicePresident: true
-        };
-        execList.push(vpObj);
-      }
-    }
-
-    // Add all other position winners (excluding president and vice president)
-    var otherKeys = Object.keys(winners);
-    for (var j = 0; j < otherKeys.length; j++) {
-      var key = otherKeys[j];
-      var lowerKey = key.toLowerCase();
-      if (lowerKey.indexOf('president') !== -1) continue;
-      if (lowerKey.indexOf('vice president') !== -1 || lowerKey.indexOf('vice-president') !== -1) continue;
-      var displayName = getDisplayName(key);
-      var execObj = {
-        name: winners[key].name,
-        program: winners[key].program || '',
-        img: winners[key].img || 'https://via.placeholder.com/80',
-        role: displayName
-      };
-      execList.push(execObj);
-    }
-
-    // Render executive cards
-    grid.innerHTML = '';
-    for (var k = 0; k < execList.length; k++) {
-      var exec = execList[k];
-      var card = document.createElement('div');
-      card.className = 'executive-card';
-      var leaderBadge = '';
-      if (exec.isPresident) {
-        leaderBadge = '<div style="margin-top:0.3rem;"><span style="background:var(--hotel-gold);color:#1A1A2E;padding:0.1rem 0.6rem;border-radius:50px;font-size:0.6rem;font-weight:700;"><i class="bi bi-crown me-1"></i>LEADER</span></div>';
-      }
-      if (exec.isVicePresident) {
-        leaderBadge = '<div style="margin-top:0.3rem;"><span style="background:rgba(201,168,76,0.2);color:var(--hotel-gold);padding:0.1rem 0.6rem;border-radius:50px;font-size:0.6rem;font-weight:700;"><i class="bi bi-star me-1"></i>DEPUTY</span></div>';
-      }
-      card.innerHTML = 
-        '<img src="' + escapeAttr(exec.img) + '" class="exec-avatar" alt="' + escapeAttr(exec.name) + '">' +
-        '<div class="exec-name">' + escapeHTML(exec.name) + '</div>' +
-        '<div class="exec-role">' + escapeHTML(exec.role) + '</div>' +
-        '<div class="exec-program">' + escapeHTML(exec.program) + '</div>' +
-        leaderBadge;
-      grid.appendChild(card);
-    }
-  }
-
-  // Load on page ready
   window.onload = function() {
     fetchDeclaration();
-    // Auto-refresh every 30 seconds
-    setInterval(fetchDeclaration, 30000);
   };
 
-  // Expose for retry button
   window.fetchDeclaration = fetchDeclaration;
+  window.loadDemoData = loadDemoData;
 </script>
 </body>
 </html>
