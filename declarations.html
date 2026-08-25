@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>CCST Elections — Declaration of Results</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap');
+    :root { --hotel-gold: #C9A84C; --hotel-dark: #1A1A2E; --hotel-border-radius: 16px; }
+    * { font-family: 'Inter', sans-serif; }
+    body { background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); min-height: 100vh; padding: 2rem; }
+    .hotel-container { max-width: 960px; margin: 0 auto; }
+    .hotel-header { text-align: center; padding: 2.5rem 2rem; background: linear-gradient(145deg, rgba(26,26,46,0.95), rgba(22,33,62,0.95)); border-radius: var(--hotel-border-radius); border: 1px solid rgba(201,168,76,0.2); box-shadow: 0 8px 32px rgba(0,0,0,0.12); margin-bottom: 2rem; position: relative; overflow: hidden; }
+    .hotel-header::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9a84c' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); opacity: 0.3; }
+    .hotel-header .logo-icon { font-size: 3rem; color: var(--hotel-gold); margin-bottom: 0.5rem; }
+    .hotel-header h1 { font-family: 'Playfair Display', serif; color: #fff; font-size: 2.4rem; font-weight: 700; letter-spacing: 2px; position: relative; }
+    .hotel-header h1 span { color: var(--hotel-gold); }
+    .hotel-header .subtitle { color: rgba(255,255,255,0.6); font-size: 0.9rem; letter-spacing: 4px; text-transform: uppercase; position: relative; }
+    .gold-divider { width: 80px; height: 2px; background: linear-gradient(90deg, transparent, var(--hotel-gold), transparent); margin: 0.8rem auto; }
+    .declaration-badge { display: inline-block; background: var(--hotel-gold); color: #1A1A2E; padding: 0.4rem 1.8rem; border-radius: 50px; font-size: 0.8rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-top: 0.5rem; }
+    .result-card { background: rgba(255,255,255,0.05); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--hotel-border-radius); padding: 1.8rem; margin-bottom: 2rem; box-shadow: 0 8px 32px rgba(0,0,0,0.12); }
+    .result-card .result-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.06); margin-bottom: 1.2rem; flex-wrap: wrap; gap: 0.5rem; }
+    .result-card .result-header h3 { font-family: 'Playfair Display', serif; color: #fff; font-size: 1.3rem; margin: 0; }
+    .result-card .result-header .total-badge { background: rgba(201,168,76,0.15); color: var(--hotel-gold); padding: 0.3rem 1rem; border-radius: 50px; font-size: 0.8rem; }
+    .candidate-result { display: flex; align-items: center; gap: 1rem; padding: 0.8rem; border-radius: 12px; margin-bottom: 0.6rem; transition: all 0.3s ease; background: rgba(255,255,255,0.03); }
+    .candidate-result:hover { background: rgba(255,255,255,0.06); }
+    .candidate-result .avatar { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(201,168,76,0.2); flex-shrink: 0; }
+    .candidate-result .result-info { flex: 1; }
+    .candidate-result .result-info .cand-name { color: #fff; font-weight: 500; font-size: 0.95rem; }
+    .candidate-result .result-info .cand-program { color: rgba(255,255,255,0.4); font-size: 0.8rem; }
+    .candidate-result .result-stats { text-align: right; flex-shrink: 0; }
+    .candidate-result .result-stats .votes { color: var(--hotel-gold); font-weight: 600; font-size: 1rem; }
+    .candidate-result .result-stats .percent { color: rgba(255,255,255,0.4); font-size: 0.8rem; }
+    .progress-hotel { height: 6px; background: rgba(255,255,255,0.06); border-radius: 10px; overflow: hidden; margin-top: 4px; }
+    .progress-hotel .progress-bar { height: 100%; border-radius: 10px; background: linear-gradient(90deg, var(--hotel-gold), #e8c84c); transition: width 0.5s ease; }
+    .top-performer { border-left: 3px solid var(--hotel-gold); background: rgba(201,168,76,0.06); }
+    .vote-none-row { border-left: 3px solid #e74c3c; background: rgba(231,76,60,0.05); }
+    .vote-none-row .votes { color: #e74c3c !important; }
+    .winner-ribbon { font-size: 0.7rem; background: var(--hotel-gold); color: #1A1A2E; padding: 0.1rem 0.8rem; border-radius: 50px; font-weight: 700; margin-left: 0.6rem; display: inline-block; text-transform: uppercase; letter-spacing: 0.5px; }
+    .summary-footer { text-align: center; padding: 1.5rem; background: rgba(255,255,255,0.03); border-radius: var(--hotel-border-radius); border: 1px solid rgba(255,255,255,0.05); margin-top: 1rem; }
+    .summary-footer .big-number { font-size: 2.5rem; font-weight: 700; color: var(--hotel-gold); font-family: 'Playfair Display', serif; }
+    .summary-footer .label { color: rgba(255,255,255,0.4); font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; }
+    .declared-stamp { display: inline-block; background: rgba(46,204,113,0.15); border: 1px solid rgba(46,204,113,0.3); color: #2ecc71; padding: 0.3rem 1.5rem; border-radius: 50px; font-size: 0.75rem; font-weight: 600; letter-spacing: 1px; }
+    .loading-spinner { display: flex; justify-content: center; align-items: center; padding: 4rem 0; color: rgba(255,255,255,0.3); }
+    .loading-spinner i { font-size: 2.5rem; animation: spin 1s linear infinite; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .no-data { text-align: center; padding: 4rem 0; color: rgba(255,255,255,0.2); }
+    .no-data i { font-size: 3rem; display: block; margin-bottom: 1rem; }
+    .error-help { background: rgba(231,76,60,0.08); border: 1px solid rgba(231,76,60,0.3); border-radius: 12px; padding: 1rem 1.2rem; color: rgba(255,255,255,0.85); font-size: 0.85rem; line-height: 1.5; text-align: left; margin-top: 1rem; }
+    @media (max-width: 768px) { body { padding: 1rem; } .hotel-header h1 { font-size: 1.6rem; } .result-card { padding: 1rem; } .candidate-result { flex-wrap: wrap; } .candidate-result .result-stats { width: 100%; text-align: left; } .candidate-result .avatar { width: 48px; height: 48px; } }
+  </style>
+</head>
+<body>
+
+<div class="hotel-container">
+  <div class="hotel-header">
+    <div class="logo-icon"><i class="bi bi-building"></i></div>
+    <h1>CCST <span>Elections</span></h1>
+    <div class="gold-divider"></div>
+    <p class="subtitle">Official Declaration of Results</p>
+    <div style="margin-top:1rem;">
+      <span class="declaration-badge"><i class="bi bi-megaphone me-2"></i>Final Results</span>
+      <span class="declared-stamp ms-2"><i class="bi bi-check-circle me-1"></i>Declared</span>
+    </div>
+  </div>
+
+  <div id="declarationContainer">
+    <div class="loading-spinner">
+      <i class="bi bi-hourglass-split"></i>
+      <span style="margin-left:1rem;">Loading declaration...</span>
+    </div>
+  </div>
+
+  <div class="summary-footer" id="summaryFooter" style="display:none;">
+    <div><span class="label">Total valid votes cast</span></div>
+    <div class="big-number" id="totalVotesDisplay">0</div>
+    <div style="margin-top:0.4rem; color: rgba(255,255,255,0.2); font-size:0.7rem; letter-spacing:1px;">
+      <i class="bi bi-dot"></i> certified by the electoral commission <i class="bi bi-dot"></i>
+    </div>
+  </div>
+</div>
+
+<script>
+  // This declaration page uses the same API endpoint as the live results.
+  // It displays the final tally in a formal "declaration" style.
+  // If you have a separate "finalize" endpoint, replace the URL below.
+
+  var CONFIG = {
+    API_URL: 'https://script.google.com/macros/s/AKfycbzcJ5IxMAUS3xKq3UPDve5wJ8SSVYCkJyy4mvVh2s6HLp9habmuh3ZoZsmpposHrOhTFA/exec',
+    TIMEOUT_MS: 15000,
+    DEBUG: true
+  };
+
+  // minimal API stub – uses the same getRealtimeTally logic
+  // if you have a separate "getFinalResults" function, use that instead.
+  // For this demo we reuse the tally endpoint.
+
+  function escapeHTML(s) { return String(s == null ? '' : s).replace(/[&<"']/g, c => ({'&':'&amp;','<':'&lt;','"':'&quot;',"'":'&#39;'}[c])); }
+  function escapeAttr(s) { return escapeHTML(s).replace(/'/g, '&#39;'); }
+
+  // this is a copy of the getRealtimeTally function from api.js (or we can define a fallback)
+  // since the page includes api.js via script tag, we assume getRealtimeTally is available.
+  // but to be safe, we wrap it.
+
+  async function fetchDeclaration() {
+    const container = document.getElementById('declarationContainer');
+    try {
+      // try to call the function from api.js
+      if (typeof getRealtimeTally === 'function') {
+        const result = await getRealtimeTally();
+        if (result && result.success) {
+          renderDeclaration(result.data);
+        } else {
+          container.innerHTML = renderError((result && result.message) || 'Could not fetch final tally.');
+        }
+      } else {
+        // fallback: use a fetch to the API directly (if api.js is missing)
+        const response = await fetch(CONFIG.API_URL + '?action=getResults', { method: 'GET' });
+        const data = await response.json();
+        if (data && data.success) {
+          renderDeclaration(data.data);
+        } else {
+          container.innerHTML = renderError((data && data.message) || 'API error.');
+        }
+      }
+    } catch (e) {
+      container.innerHTML = renderError(e.message || String(e));
+    }
+  }
+
+  function renderError(message) {
+    const safe = String(message || '').replace(/[<>&]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]));
+    return '<div class="result-card" style="text-align:center;padding:2rem;"><i class="bi bi-exclamation-triangle" style="font-size:3rem;color:#e74c3c;display:block;margin-bottom:1rem;"></i><h5 style="color:#fff;margin-bottom:0.5rem;">Cannot load declaration</h5><p style="color:rgba(255,255,255,0.7);">' + safe.replace(/\n/g,'<br>') + '</p><button class="btn-secondary-sm" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#fff;padding:0.4rem 1.2rem;border-radius:8px;font-size:0.8rem;" onclick="fetchDeclaration()"><i class="bi bi-arrow-repeat me-1"></i>Retry</button></div>';
+  }
+
+  function renderDeclaration(tallies) {
+    const container = document.getElementById('declarationContainer');
+    const footer = document.getElementById('summaryFooter');
+    if (!tallies || Object.keys(tallies).length === 0) {
+      container.innerHTML = '<div class="no-data"><i class="bi bi-inbox"></i><p>No voting data to declare.</p></div>';
+      footer.style.display = 'none';
+      return;
+    }
+
+    let grandTotal = 0;
+    let html = '';
+    Object.keys(tallies).forEach(pos => {
+      const positionData = tallies[pos];
+      const candidates = Object.keys(positionData.candidates || {});
+      let topVotes = 0;
+      candidates.forEach(c => { if ((positionData.candidates[c].count || 0) > topVotes) topVotes = positionData.candidates[c].count; });
+      grandTotal += (positionData.totalVotes || 0);
+
+      html += '<div class="result-card"><div class="result-header"><h3><i class="bi bi-trophy me-2" style="color:var(--hotel-gold);"></i>' + escapeHTML(pos) + '</h3><span class="total-badge"><i class="bi bi-people me-1"></i>' + candidates.length + ' candidate' + (candidates.length > 1 ? 's' : '') + ' &bull; ' + (positionData.totalVotes || 0) + ' votes</span></div>';
+
+      candidates.forEach(candName => {
+        const cand = positionData.candidates[candName];
+        const percent = positionData.totalVotes > 0 ? ((cand.count / positionData.totalVotes) * 100).toFixed(1) : 0;
+        const isTop = cand.count === topVotes && topVotes > 0;
+        html += '<div class="candidate-result ' + (isTop ? 'top-performer' : '') + '"><img src="' + (cand.img || 'https://via.placeholder.com/64') + '" class="avatar" alt="' + escapeAttr(candName) + '"><div class="result-info"><div class="cand-name">' + escapeHTML(candName) + (isTop ? ' <span class="winner-ribbon"><i class="bi bi-crown me-1"></i>Winner</span>' : '') + '</div><div class="cand-program"><i class="bi bi-book me-1"></i>' + escapeHTML(cand.program || '') + '</div><div class="progress-hotel"><div class="progress-bar" style="width: ' + percent + '%;"></div></div></div><div class="result-stats"><div class="votes">' + cand.count + '</div><div class="percent">' + percent + '%</div></div></div>';
+      });
+
+      if (positionData.noneCount && positionData.noneCount > 0) {
+        const nonePercent = positionData.totalVotes > 0 ? ((positionData.noneCount / positionData.totalVotes) * 100).toFixed(1) : 0;
+        html += '<div class="candidate-result vote-none-row"><div class="avatar" style="display:flex;align-items:center;justify-content:center;background:rgba(231,76,60,0.1);font-size:1.5rem;color:#e74c3c;"><i class="bi bi-x-circle"></i></div><div class="result-info"><div class="cand-name" style="color:#e74c3c;">Voted None (Abstained)</div><div class="cand-program">Voter chose not to vote</div><div class="progress-hotel"><div class="progress-bar" style="width: ' + nonePercent + '%;background:linear-gradient(90deg,#e74c3c,#c0392b);"></div></div></div><div class="result-stats"><div class="votes">' + positionData.noneCount + '</div><div class="percent">' + nonePercent + '%</div></div></div>';
+      }
+      html += '</div>';
+    });
+
+    container.innerHTML = html;
+    footer.style.display = 'block';
+    document.getElementById('totalVotesDisplay').textContent = grandTotal;
+  }
+
+  // load on page ready
+  window.onload = function() {
+    fetchDeclaration();
+    // if you want auto-refresh, uncomment:
+    // setInterval(fetchDeclaration, 10000);
+  };
+
+  // expose for retry button
+  window.fetchDeclaration = fetchDeclaration;
+</script>
+</body>
+</html>
