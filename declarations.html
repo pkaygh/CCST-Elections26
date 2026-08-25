@@ -29,7 +29,7 @@
     .candidate-result .result-info { flex: 1; }
     .candidate-result .result-info .cand-name { color: #fff; font-weight: 500; font-size: 0.95rem; }
     .candidate-result .result-info .cand-program { color: rgba(255,255,255,0.4); font-size: 0.8rem; }
-    .candidate-result .result-stats { text-align: right; flex-shrink: 0; }
+    .candidate-result .result-stats { text-align: right; flex-shrink: 0; min-width: 80px; }
     .candidate-result .result-stats .votes { color: var(--hotel-gold); font-weight: 600; font-size: 1rem; }
     .candidate-result .result-stats .percent { color: rgba(255,255,255,0.4); font-size: 0.8rem; }
     .progress-hotel { height: 6px; background: rgba(255,255,255,0.06); border-radius: 10px; overflow: hidden; margin-top: 4px; }
@@ -48,6 +48,8 @@
     .no-data { text-align: center; padding: 4rem 0; color: rgba(255,255,255,0.2); }
     .no-data i { font-size: 3rem; display: block; margin-bottom: 1rem; }
     .error-help { background: rgba(231,76,60,0.08); border: 1px solid rgba(231,76,60,0.3); border-radius: 12px; padding: 1rem 1.2rem; color: rgba(255,255,255,0.85); font-size: 0.85rem; line-height: 1.5; text-align: left; margin-top: 1rem; }
+    .btn-secondary-sm { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #fff; padding: 0.4rem 1.2rem; border-radius: 8px; font-size: 0.8rem; cursor: pointer; transition: all 0.3s ease; }
+    .btn-secondary-sm:hover { background: rgba(255,255,255,0.15); color: #fff; }
     @media (max-width: 768px) { body { padding: 1rem; } .hotel-header h1 { font-size: 1.6rem; } .result-card { padding: 1rem; } .candidate-result { flex-wrap: wrap; } .candidate-result .result-stats { width: 100%; text-align: left; } .candidate-result .avatar { width: 48px; height: 48px; } }
   </style>
 </head>
@@ -82,61 +84,73 @@
 </div>
 
 <script>
-  // This declaration page uses the same API endpoint as the live results.
-  // It displays the final tally in a formal "declaration" style.
-  // If you have a separate "finalize" endpoint, replace the URL below.
-
+  // Configuration - update this with your actual API URL
   var CONFIG = {
     API_URL: 'https://script.google.com/macros/s/AKfycbzcJ5IxMAUS3xKq3UPDve5wJ8SSVYCkJyy4mvVh2s6HLp9habmuh3ZoZsmpposHrOhTFA/exec',
     TIMEOUT_MS: 15000,
     DEBUG: true
   };
 
-  // minimal API stub – uses the same getRealtimeTally logic
-  // if you have a separate "getFinalResults" function, use that instead.
-  // For this demo we reuse the tally endpoint.
-
-  function escapeHTML(s) { return String(s == null ? '' : s).replace(/[&<"']/g, c => ({'&':'&amp;','<':'&lt;','"':'&quot;',"'":'&#39;'}[c])); }
-  function escapeAttr(s) { return escapeHTML(s).replace(/'/g, '&#39;'); }
-
-  // this is a copy of the getRealtimeTally function from api.js (or we can define a fallback)
-  // since the page includes api.js via script tag, we assume getRealtimeTally is available.
-  // but to be safe, we wrap it.
+  function escapeHTML(s) { 
+    return String(s == null ? '' : s).replace(/[&<"']/g, c => ({'&':'&amp;','<':'&lt;','"':'&quot;',"'":'&#39;'}[c])); 
+  }
+  
+  function escapeAttr(s) { 
+    return escapeHTML(s).replace(/'/g, '&#39;'); 
+  }
 
   async function fetchDeclaration() {
     const container = document.getElementById('declarationContainer');
     try {
-      // try to call the function from api.js
-      if (typeof getRealtimeTally === 'function') {
-        const result = await getRealtimeTally();
-        if (result && result.success) {
-          renderDeclaration(result.data);
-        } else {
-          container.innerHTML = renderError((result && result.message) || 'Could not fetch final tally.');
-        }
-      } else {
-        // fallback: use a fetch to the API directly (if api.js is missing)
-        const response = await fetch(CONFIG.API_URL + '?action=getResults', { method: 'GET' });
-        const data = await response.json();
-        if (data && data.success) {
-          renderDeclaration(data.data);
-        } else {
-          container.innerHTML = renderError((data && data.message) || 'API error.');
-        }
+      // Try to fetch results from the API
+      const url = CONFIG.API_URL + '?action=getResults&t=' + Date.now();
+      console.log('Fetching results from:', url);
+      
+      const response = await fetch(url, {
+        method: 'GET',
+        mode: 'cors',
+        headers: { 'Content-Type': 'application/json' }
+      });
+      
+      if (!response.ok) {
+        throw new Error('HTTP error! status: ' + response.status);
       }
-    } catch (e) {
-      container.innerHTML = renderError(e.message || String(e));
+      
+      const data = await response.json();
+      console.log('API Response:', data);
+      
+      if (data && data.success) {
+        renderDeclaration(data.data);
+      } else {
+        container.innerHTML = renderError((data && data.message) || 'Could not fetch final tally.');
+      }
+    } catch (error) {
+      console.error('Error fetching declaration:', error);
+      container.innerHTML = renderError(error.message || String(error));
     }
   }
 
   function renderError(message) {
     const safe = String(message || '').replace(/[<>&]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]));
-    return '<div class="result-card" style="text-align:center;padding:2rem;"><i class="bi bi-exclamation-triangle" style="font-size:3rem;color:#e74c3c;display:block;margin-bottom:1rem;"></i><h5 style="color:#fff;margin-bottom:0.5rem;">Cannot load declaration</h5><p style="color:rgba(255,255,255,0.7);">' + safe.replace(/\n/g,'<br>') + '</p><button class="btn-secondary-sm" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#fff;padding:0.4rem 1.2rem;border-radius:8px;font-size:0.8rem;" onclick="fetchDeclaration()"><i class="bi bi-arrow-repeat me-1"></i>Retry</button></div>';
+    return '<div class="result-card" style="text-align:center;padding:2rem;">' +
+      '<i class="bi bi-exclamation-triangle" style="font-size:3rem;color:#e74c3c;display:block;margin-bottom:1rem;"></i>' +
+      '<h5 style="color:#fff;margin-bottom:0.5rem;">Cannot load declaration</h5>' +
+      '<p style="color:rgba(255,255,255,0.7);">' + safe.replace(/\n/g,'<br>') + '</p>' +
+      '<button class="btn-secondary-sm" onclick="fetchDeclaration()">' +
+      '<i class="bi bi-arrow-repeat me-1"></i>Retry</button>' +
+      '<div class="error-help" style="margin-top:1rem;text-align:left;">' +
+      '<strong>Debug info:</strong><br>' +
+      'API URL: ' + CONFIG.API_URL + '<br>' +
+      'Make sure the API is deployed and accessible.' +
+      '</div></div>';
   }
 
   function renderDeclaration(tallies) {
     const container = document.getElementById('declarationContainer');
     const footer = document.getElementById('summaryFooter');
+    
+    console.log('Rendering declaration with data:', tallies);
+    
     if (!tallies || Object.keys(tallies).length === 0) {
       container.innerHTML = '<div class="no-data"><i class="bi bi-inbox"></i><p>No voting data to declare.</p></div>';
       footer.style.display = 'none';
@@ -145,25 +159,61 @@
 
     let grandTotal = 0;
     let html = '';
+    
     Object.keys(tallies).forEach(pos => {
       const positionData = tallies[pos];
       const candidates = Object.keys(positionData.candidates || {});
       let topVotes = 0;
-      candidates.forEach(c => { if ((positionData.candidates[c].count || 0) > topVotes) topVotes = positionData.candidates[c].count; });
+      
+      candidates.forEach(c => { 
+        if ((positionData.candidates[c].count || 0) > topVotes) {
+          topVotes = positionData.candidates[c].count; 
+        }
+      });
+      
       grandTotal += (positionData.totalVotes || 0);
 
-      html += '<div class="result-card"><div class="result-header"><h3><i class="bi bi-trophy me-2" style="color:var(--hotel-gold);"></i>' + escapeHTML(pos) + '</h3><span class="total-badge"><i class="bi bi-people me-1"></i>' + candidates.length + ' candidate' + (candidates.length > 1 ? 's' : '') + ' &bull; ' + (positionData.totalVotes || 0) + ' votes</span></div>';
+      html += '<div class="result-card">' +
+        '<div class="result-header">' +
+        '<h3><i class="bi bi-trophy me-2" style="color:var(--hotel-gold);"></i>' + escapeHTML(pos) + '</h3>' +
+        '<span class="total-badge"><i class="bi bi-people me-1"></i>' + 
+        candidates.length + ' candidate' + (candidates.length > 1 ? 's' : '') + 
+        ' &bull; ' + (positionData.totalVotes || 0) + ' votes</span>' +
+        '</div>';
 
       candidates.forEach(candName => {
         const cand = positionData.candidates[candName];
         const percent = positionData.totalVotes > 0 ? ((cand.count / positionData.totalVotes) * 100).toFixed(1) : 0;
         const isTop = cand.count === topVotes && topVotes > 0;
-        html += '<div class="candidate-result ' + (isTop ? 'top-performer' : '') + '"><img src="' + (cand.img || 'https://via.placeholder.com/64') + '" class="avatar" alt="' + escapeAttr(candName) + '"><div class="result-info"><div class="cand-name">' + escapeHTML(candName) + (isTop ? ' <span class="winner-ribbon"><i class="bi bi-crown me-1"></i>Winner</span>' : '') + '</div><div class="cand-program"><i class="bi bi-book me-1"></i>' + escapeHTML(cand.program || '') + '</div><div class="progress-hotel"><div class="progress-bar" style="width: ' + percent + '%;"></div></div></div><div class="result-stats"><div class="votes">' + cand.count + '</div><div class="percent">' + percent + '%</div></div></div>';
+        
+        html += '<div class="candidate-result ' + (isTop ? 'top-performer' : '') + '">' +
+          '<img src="' + (cand.img || 'https://via.placeholder.com/64') + '" class="avatar" alt="' + escapeAttr(candName) + '">' +
+          '<div class="result-info">' +
+          '<div class="cand-name">' + escapeHTML(candName) + 
+          (isTop ? ' <span class="winner-ribbon"><i class="bi bi-crown me-1"></i>Winner</span>' : '') + 
+          '</div>' +
+          '<div class="cand-program"><i class="bi bi-book me-1"></i>' + escapeHTML(cand.program || '') + '</div>' +
+          '<div class="progress-hotel"><div class="progress-bar" style="width: ' + percent + '%;"></div></div>' +
+          '</div>' +
+          '<div class="result-stats">' +
+          '<div class="votes">' + cand.count + '</div>' +
+          '<div class="percent">' + percent + '%</div>' +
+          '</div></div>';
       });
 
       if (positionData.noneCount && positionData.noneCount > 0) {
         const nonePercent = positionData.totalVotes > 0 ? ((positionData.noneCount / positionData.totalVotes) * 100).toFixed(1) : 0;
-        html += '<div class="candidate-result vote-none-row"><div class="avatar" style="display:flex;align-items:center;justify-content:center;background:rgba(231,76,60,0.1);font-size:1.5rem;color:#e74c3c;"><i class="bi bi-x-circle"></i></div><div class="result-info"><div class="cand-name" style="color:#e74c3c;">Voted None (Abstained)</div><div class="cand-program">Voter chose not to vote</div><div class="progress-hotel"><div class="progress-bar" style="width: ' + nonePercent + '%;background:linear-gradient(90deg,#e74c3c,#c0392b);"></div></div></div><div class="result-stats"><div class="votes">' + positionData.noneCount + '</div><div class="percent">' + nonePercent + '%</div></div></div>';
+        html += '<div class="candidate-result vote-none-row">' +
+          '<div class="avatar" style="display:flex;align-items:center;justify-content:center;background:rgba(231,76,60,0.1);font-size:1.5rem;color:#e74c3c;"><i class="bi bi-x-circle"></i></div>' +
+          '<div class="result-info">' +
+          '<div class="cand-name" style="color:#e74c3c;">Voted None (Abstained)</div>' +
+          '<div class="cand-program">Voter chose not to vote</div>' +
+          '<div class="progress-hotel"><div class="progress-bar" style="width: ' + nonePercent + '%;background:linear-gradient(90deg,#e74c3c,#c0392b);"></div></div>' +
+          '</div>' +
+          '<div class="result-stats">' +
+          '<div class="votes">' + positionData.noneCount + '</div>' +
+          '<div class="percent">' + nonePercent + '%</div>' +
+          '</div></div>';
       }
       html += '</div>';
     });
@@ -173,14 +223,14 @@
     document.getElementById('totalVotesDisplay').textContent = grandTotal;
   }
 
-  // load on page ready
+  // Load on page ready
   window.onload = function() {
     fetchDeclaration();
-    // if you want auto-refresh, uncomment:
-    // setInterval(fetchDeclaration, 10000);
+    // Auto-refresh every 30 seconds
+    setInterval(fetchDeclaration, 30000);
   };
 
-  // expose for retry button
+  // Expose for retry button
   window.fetchDeclaration = fetchDeclaration;
 </script>
 </body>
