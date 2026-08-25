@@ -50,6 +50,7 @@
     .no-data { text-align: center; padding: 4rem 0; color: rgba(255,255,255,0.2); }
     .no-data i { font-size: 3rem; display: block; margin-bottom: 1rem; }
     .error-help { background: rgba(231,76,60,0.08); border: 1px solid rgba(231,76,60,0.3); border-radius: 12px; padding: 1rem 1.2rem; color: rgba(255,255,255,0.85); font-size: 0.85rem; line-height: 1.5; text-align: left; margin-top: 1rem; }
+    .error-help code { background: rgba(0,0,0,0.4); padding: 1px 6px; border-radius: 4px; font-size: 0.85em; color: #ffd; }
 
     /* Congratulation Banner */
     .congrats-banner {
@@ -159,7 +160,6 @@
       100% { transform: translateY(300px) rotate(720deg); opacity: 0; }
     }
 
-    /* Demo button */
     .demo-btn {
       background: rgba(201,168,76,0.15);
       border: 1px solid rgba(201,168,76,0.4);
@@ -174,16 +174,18 @@
     .demo-btn:hover {
       background: rgba(201,168,76,0.25);
     }
-
-    .api-debug {
-      background: rgba(0,0,0,0.2);
+    .btn-secondary-sm {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #fff;
+      padding: 0.4rem 1.2rem;
       border-radius: 8px;
-      padding: 0.8rem;
-      margin-top: 0.8rem;
-      font-family: monospace;
-      font-size: 0.75rem;
-      color: rgba(255,255,255,0.5);
-      word-break: break-all;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .btn-secondary-sm:hover {
+      background: rgba(255,255,255,0.15);
     }
 
     @media (max-width: 768px) { 
@@ -216,7 +218,7 @@
   <!-- Congratulation Banner -->
   <div id="congratsBanner" style="display:none;">
     <div class="congrats-banner">
-      <div style="position:absolute;top:10px;left:10%;" class="confetti-piece" style="animation-delay:0s;"></div>
+      <div style="position:absolute;top:10px;left:10%;" class="confetti-piece"></div>
       <div style="position:absolute;top:10px;left:30%;" class="confetti-piece" style="animation-delay:0.5s;"></div>
       <div style="position:absolute;top:10px;left:50%;" class="confetti-piece" style="animation-delay:1s;"></div>
       <div style="position:absolute;top:10px;left:70%;" class="confetti-piece" style="animation-delay:1.5s;"></div>
@@ -243,137 +245,31 @@
   </div>
 </div>
 
+<!-- Use the same api.js as results.html and admin.html -->
 <script>
-  /*
-   * ============================================
-   * GOOGLE APPS SCRIPT BACKEND — REQUIRED CODE
-   * ============================================
-   * Paste this into your Google Apps Script (.gs file) to fix CORS:
-   *
-   * function doGet(e) {
-   *   var action = e.parameter.action;
-   *   var result = { success: true, data: {} };
-   *   
-   *   // ... your existing logic to build result.data ...
-   *   
-   *   // CRITICAL: Return with CORS headers using JSONP-style callback
-   *   var callback = e.parameter.callback;
-   *   var output = ContentService.createTextOutput();
-   *   var json = JSON.stringify(result);
-   *   
-   *   if (callback) {
-   *     output.setContent(callback + '(' + json + ');');
-   *     output.setMimeType(ContentService.MimeType.JAVASCRIPT);
-   *   } else {
-   *     output.setContent(json);
-   *     output.setMimeType(ContentService.MimeType.JSON);
-   *   }
-   *   
-   *   // CORS header workaround for Google Apps Script
-   *   return output;
-   * }
-   *
-   * DEPLOYMENT CHECKLIST:
-   * 1. Deploy as Web App (not just a script)
-   * 2. Execute as: Me
-   * 3. Who has access: Anyone (or Anyone with Google account)
-   * 4. Use the NEW deployment URL (ends in /exec), not the old one
-   * ============================================
-   */
-
   var CONFIG = {
     API_URL: 'https://script.google.com/macros/s/AKfycbzcJ5IxMAUS3xKq3UPDve5wJ8SSVYCkJyy4mvVh2s6HLp9habmuh3ZoZsmpposHrOhTFA/exec',
     TIMEOUT_MS: 15000,
     DEBUG: true
   };
-
+</script>
+<script src="api.js"></script>
+<script>
   function escapeHTML(s) { return String(s == null ? '' : s).replace(/[&<"']/g, c => ({'&':'&amp;','<':'&lt;','"':'&quot;',"'":'&#39;'}[c])); }
   function escapeAttr(s) { return escapeHTML(s).replace(/'/g, '&#39;'); }
-
-  // Generate a unique callback name for JSONP
-  function jsonpCallbackName() {
-    return 'ccstCallback_' + Date.now() + '_' + Math.floor(Math.random() * 10000);
-  }
-
-  // Try JSONP (works better with Google Apps Script CORS)
-  function fetchJSONP(url, callbackName) {
-    return new Promise(function(resolve, reject) {
-      var script = document.createElement('script');
-      var timeout = setTimeout(function() {
-        cleanup();
-        reject(new Error('JSONP timeout'));
-      }, CONFIG.TIMEOUT_MS);
-
-      function cleanup() {
-        clearTimeout(timeout);
-        if (script.parentNode) script.parentNode.removeChild(script);
-        delete window[callbackName];
-      }
-
-      window[callbackName] = function(data) {
-        cleanup();
-        resolve(data);
-      };
-
-      script.onerror = function() {
-        cleanup();
-        reject(new Error('JSONP script error'));
-      };
-
-      script.src = url + (url.indexOf('?') >= 0 ? '&' : '?') + 'callback=' + encodeURIComponent(callbackName);
-      document.head.appendChild(script);
-    });
-  }
 
   async function fetchDeclaration() {
     const container = document.getElementById('declarationContainer');
     container.innerHTML = '<div class="loading-spinner"><i class="bi bi-hourglass-split"></i><span style="margin-left:1rem;">Loading declaration...</span></div>';
 
     try {
-      // Method 1: Try existing getRealtimeTally() from api.js
-      if (typeof getRealtimeTally === 'function') {
-        try {
-          const result = await getRealtimeTally();
-          if (result && result.success) {
-            renderDeclaration(result.data);
-            return;
-          }
-        } catch (e) {
-          console.log('api.js method failed:', e);
-        }
+      // Use the same getRealtimeTally() that results.html uses
+      const result = await getRealtimeTally();
+      if (result && result.success) {
+        renderDeclaration(result.data);
+      } else {
+        throw new Error((result && result.message) || 'Could not fetch final tally.');
       }
-
-      // Method 2: Try standard fetch with CORS
-      try {
-        const response = await fetch(CONFIG.API_URL + '?action=getResults', { 
-          method: 'GET',
-          mode: 'cors',
-          cache: 'no-cache'
-        });
-        const data = await response.json();
-        if (data && data.success) {
-          renderDeclaration(data.data);
-          return;
-        }
-      } catch (e) {
-        console.log('Standard fetch failed:', e);
-      }
-
-      // Method 3: Try JSONP fallback (bypasses CORS)
-      try {
-        const cbName = jsonpCallbackName();
-        const data = await fetchJSONP(CONFIG.API_URL + '?action=getResults', cbName);
-        if (data && data.success) {
-          renderDeclaration(data.data);
-          return;
-        }
-      } catch (e) {
-        console.log('JSONP fallback failed:', e);
-      }
-
-      // All methods failed — show error with demo option
-      throw new Error('All connection methods failed. This is usually a CORS or deployment issue with your Google Apps Script.');
-
     } catch (e) {
       container.innerHTML = renderError(e.message || String(e));
     }
@@ -385,15 +281,13 @@
       '<i class="bi bi-exclamation-triangle" style="font-size:3rem;color:#e74c3c;display:block;margin-bottom:1rem;"></i>' +
       '<h5 style="color:#fff;margin-bottom:0.5rem;">Cannot load declaration</h5>' +
       '<p style="color:rgba(255,255,255,0.7);">' + safe.replace(/\n/g,'<br>') + '</p>' +
-      '<button class="btn-secondary-sm" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#fff;padding:0.4rem 1.2rem;border-radius:8px;font-size:0.8rem;" onclick="fetchDeclaration()"><i class="bi bi-arrow-repeat me-1"></i>Retry</button>' +
+      '<button class="btn-secondary-sm" onclick="fetchDeclaration()"><i class="bi bi-arrow-repeat me-1"></i>Retry</button>' +
       '<br><button class="demo-btn" onclick="loadDemoData()"><i class="bi bi-eye me-1"></i>Preview Demo Layout</button>' +
-      '<div class="api-debug">API: ' + escapeHTML(CONFIG.API_URL) + '</div>' +
       '<div class="error-help" style="margin-top:1rem;text-align:left;">' +
-        '<strong style="color:#e74c3c;"><i class="bi bi-wrench me-1"></i>How to fix this:</strong><br>' +
-        '1. Make sure your Google Apps Script is deployed as a <strong>Web App</strong> (not just shared)<br>' +
-        '2. Redeploy with "Execute as: Me" and "Who has access: Anyone"<br>' +
-        '3. Update the API_URL in this file with the <strong>new /exec URL</strong><br>' +
-        '4. Add <code>callback</code> support to your doGet() function (see code comment at top of this file)' +
+        '<strong style="color:#e74c3c;"><i class="bi bi-wrench me-1"></i>Troubleshooting:</strong><br>' +
+        '1. Make sure <code>api.js</code> is in the same folder as this file.<br>' +
+        '2. Check that your Google Apps Script deployment has <strong>"Who has access: Anyone"</strong>.<br>' +
+        '3. If the page is opened from <code>file://</code>, host it on a web server (or enable a CORS proxy in config).' +
       '</div>' +
     '</div>';
   }
@@ -499,9 +393,10 @@
         const ribbonClass = isSecond ? 'vice-ribbon' : 'winner-ribbon';
         const rowClass = isTop ? 'top-performer' : (isSecond ? 'vice-performer' : '');
 
-        html += '<div class="candidate-result ' + rowClass + '"><img src="' + (cand.img || 'https://via.placeholder.com/64') + '" class="avatar" alt="' + escapeAttr(candName) + '" onerror="this.src=\'https://via.placeholder.com/64?text=No+Image\'"><div class="result-info"><div class="cand-name">' + escapeHTML(candName) + (isWinner ? ' <span class="' + ribbonClass + '"><i class="bi bi-crown me-1"></i>' + winnerLabel + '</span>' : '') + '</div><div class="cand-program"><i class="bi bi-book me-1"></i>' + escapeHTML(cand.program || '') + '</div><div class="progress-hotel"><div class="progress-bar" style="width: ' + percent + '%;"></div></div></div><div class="result-stats"><div class="votes">' + cand.count + '</div><div class="percent">' + percent + '%</div></div></div>';
+        html += '<div class="candidate-result ' + rowClass + '"><img src="' + (cand.img || 'https://via.placeholder.com/64') + '" class="avatar" alt="' + escapeAttr(candName) + '" onerror="this.src='https://via.placeholder.com/64?text=No+Image'"><div class="result-info"><div class="cand-name">' + escapeHTML(candName) + (isWinner ? ' <span class="' + ribbonClass + '"><i class="bi bi-crown me-1"></i>' + winnerLabel + '</span>' : '') + '</div><div class="cand-program"><i class="bi bi-book me-1"></i>' + escapeHTML(cand.program || '') + '</div><div class="progress-hotel"><div class="progress-bar" style="width: ' + percent + '%;"></div></div></div><div class="result-stats"><div class="votes">' + cand.count + '</div><div class="percent">' + percent + '%</div></div></div>';
       });
 
+      // Collect executives for banner
       if (isPresident) {
         if (sortedCandidates.length > 0) {
           executives.push({
@@ -541,10 +436,11 @@
     footer.style.display = 'block';
     document.getElementById('totalVotesDisplay').textContent = grandTotal;
 
+    // Render congratulation banner
     if (executives.length > 0) {
       execGrid.innerHTML = executives.map(ex => 
         '<div class="exec-card">' +
-          '<img src="' + (ex.img || 'https://via.placeholder.com/72') + '" class="exec-avatar" alt="' + escapeAttr(ex.name) + '" onerror="this.src=\'https://via.placeholder.com/72?text=No+Image\'">' +
+          '<img src="' + (ex.img || 'https://via.placeholder.com/72') + '" class="exec-avatar" alt="' + escapeAttr(ex.name) + '" onerror="this.src='https://via.placeholder.com/72?text=No+Image'">' +
           '<div class="exec-name">' + escapeHTML(ex.name) + '</div>' +
           '<div class="exec-role">' + escapeHTML(ex.role) + '</div>' +
           '<div class="exec-votes"><i class="bi bi-check2-circle me-1"></i>' + ex.votes + ' votes</div>' +
