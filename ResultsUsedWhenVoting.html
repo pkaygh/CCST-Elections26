@@ -2,422 +2,158 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>CCST Elections — Admin Panel</title>
+  <title>CCST Elections — Live Results</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap');
-
-    :root {
-      --hotel-gold: #C9A84C;
-      --hotel-dark: #1A1A2E;
-      --hotel-navy: #16213E;
-      --hotel-maroon: #8B1A1A;
-      --hotel-cream: #F5F0E8;
-      --hotel-shadow: 0 8px 32px rgba(0,0,0,0.12);
-      --hotel-border-radius: 16px;
-    }
-
+    :root { --hotel-gold: #C9A84C; --hotel-dark: #1A1A2E; --hotel-border-radius: 16px; }
     * { font-family: 'Inter', sans-serif; }
-
-    body {
-      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-      min-height: 100vh;
-      padding: 2rem;
-    }
-
+    body { background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); min-height: 100vh; padding: 2rem; }
     .hotel-container { max-width: 900px; margin: 0 auto; }
-
-    .hotel-header {
-      text-align: center;
-      padding: 2.5rem 2rem;
-      background: linear-gradient(145deg, rgba(26,26,46,0.95), rgba(22,33,62,0.95));
-      border-radius: var(--hotel-border-radius);
-      border: 1px solid rgba(201,168,76,0.2);
-      box-shadow: var(--hotel-shadow);
-      margin-bottom: 2rem;
-      position: relative;
-      overflow: hidden;
-    }
-    .hotel-header::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9a84c' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-      opacity: 0.3;
-    }
+    .hotel-header { text-align: center; padding: 2.5rem 2rem; background: linear-gradient(145deg, rgba(26,26,46,0.95), rgba(22,33,62,0.95)); border-radius: var(--hotel-border-radius); border: 1px solid rgba(201,168,76,0.2); box-shadow: 0 8px 32px rgba(0,0,0,0.12); margin-bottom: 2rem; position: relative; overflow: hidden; }
+    .hotel-header::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9a84c' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); opacity: 0.3; }
     .hotel-header .logo-icon { font-size: 3rem; color: var(--hotel-gold); margin-bottom: 0.5rem; }
     .hotel-header h1 { font-family: 'Playfair Display', serif; color: #fff; font-size: 2.2rem; font-weight: 700; letter-spacing: 2px; position: relative; }
     .hotel-header h1 span { color: var(--hotel-gold); }
     .hotel-header .subtitle { color: rgba(255,255,255,0.6); font-size: 0.9rem; letter-spacing: 4px; text-transform: uppercase; position: relative; }
     .gold-divider { width: 80px; height: 2px; background: linear-gradient(90deg, transparent, var(--hotel-gold), transparent); margin: 0.8rem auto; }
-
-    .hotel-card {
-      background: rgba(255,255,255,0.05);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: var(--hotel-border-radius);
-      padding: 2rem;
-      margin-bottom: 2rem;
-      box-shadow: var(--hotel-shadow);
-      transition: all 0.3s ease;
-    }
-    .hotel-card:hover { border-color: rgba(201,168,76,0.3); transform: translateY(-2px); }
-    .hotel-card .card-title { font-family: 'Playfair Display', serif; color: #fff; font-size: 1.3rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.8rem; }
-    .hotel-card .card-title i { color: var(--hotel-gold); }
-
-    .gold-badge { background: linear-gradient(135deg, var(--hotel-gold), #a8883a); color: #fff; padding: 0.4rem 1.2rem; border-radius: 50px; font-size: 0.75rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
-
-    .hotel-input { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: #fff; padding: 0.8rem 1.2rem; transition: all 0.3s ease; width: 100%; }
-    .hotel-input:focus { background: rgba(255,255,255,0.1); border-color: var(--hotel-gold); box-shadow: 0 0 0 3px rgba(201,168,76,0.15); color: #fff; outline: none; }
-    .hotel-input::placeholder { color: rgba(255,255,255,0.35); }
-    .hotel-label { color: rgba(255,255,255,0.7); font-size: 0.85rem; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 0.4rem; display: block; }
-
-    .btn-hotel-primary { background: linear-gradient(135deg, var(--hotel-gold), #a8883a); border: none; color: #1A1A2E; font-weight: 600; padding: 0.9rem 2rem; border-radius: 12px; transition: all 0.3s ease; width: 100%; letter-spacing: 1px; }
-    .btn-hotel-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(201,168,76,0.3); color: #1A1A2E; }
-    .btn-hotel-secondary { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #fff; font-weight: 500; padding: 0.9rem 2rem; border-radius: 12px; transition: all 0.3s ease; width: 100%; }
-    .btn-hotel-secondary:hover { background: rgba(255,255,255,0.15); color: #fff; }
-    .btn-hotel-danger { background: linear-gradient(135deg, #c0392b, #e74c3c); border: none; color: #fff; padding: 0.4rem 1rem; border-radius: 8px; font-size: 0.8rem; transition: all 0.3s ease; }
-    .btn-hotel-danger:hover { transform: scale(1.05); color: #fff; }
-    .btn-hotel-warning { background: linear-gradient(135deg, #f39c12, #e67e22); border: none; color: #fff; padding: 0.4rem 1rem; border-radius: 8px; font-size: 0.8rem; transition: all 0.3s ease; }
-    .btn-hotel-warning:hover { transform: scale(1.05); color: #fff; }
-
-    .candidate-item { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 0.8rem 1.2rem; margin-bottom: 0.6rem; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s ease; }
-    .candidate-item:hover { background: rgba(255,255,255,0.08); border-color: rgba(201,168,76,0.2); }
-    .candidate-item .candidate-info { display: flex; align-items: center; gap: 1rem; }
-    .candidate-item .candidate-img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(201,168,76,0.3); }
-    .candidate-item .candidate-name { color: #fff; font-weight: 500; font-size: 1.05rem; }
-    .candidate-item .candidate-program { color: rgba(255,255,255,0.5); font-size: 0.85rem; }
-    .candidate-item .candidate-actions { display: flex; gap: 0.5rem; }
-
-    .position-header { display: flex; justify-content: space-between; align-items: center; padding: 0.8rem 1.2rem; background: rgba(201,168,76,0.1); border-radius: 12px; margin-bottom: 1rem; border-left: 3px solid var(--hotel-gold); }
-    .position-header h6 { color: #fff; font-weight: 600; margin: 0; font-size: 1.1rem; }
-    .position-header .position-badge { background: rgba(201,168,76,0.2); color: var(--hotel-gold); padding: 0.2rem 0.8rem; border-radius: 50px; font-size: 0.7rem; }
-
-    .auth-message { color: #e74c3c; font-weight: 500; margin-top: 0.8rem; text-align: center; white-space: pre-wrap; }
-    .success-message { color: #2ecc71; }
-
-    .error-help {
-      background: rgba(231,76,60,0.08);
-      border: 1px solid rgba(231,76,60,0.3);
-      border-radius: 12px;
-      padding: 1rem 1.2rem;
-      color: rgba(255,255,255,0.85);
-      font-size: 0.85rem;
-      line-height: 1.5;
-      text-align: left;
-      margin-top: 1rem;
-    }
+    .live-badge { display: inline-block; background: #e74c3c; color: #fff; padding: 0.3rem 1.2rem; border-radius: 50px; font-size: 0.75rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; animation: pulse 1.5s ease-in-out infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+    .live-badge i { margin-right: 0.5rem; }
+    .result-card { background: rgba(255,255,255,0.05); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--hotel-border-radius); padding: 1.5rem; margin-bottom: 2rem; box-shadow: 0 8px 32px rgba(0,0,0,0.12); }
+    .result-card .result-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.06); margin-bottom: 1.2rem; flex-wrap: wrap; gap: 0.5rem; }
+    .result-card .result-header h3 { font-family: 'Playfair Display', serif; color: #fff; font-size: 1.3rem; margin: 0; }
+    .result-card .result-header .total-badge { background: rgba(201,168,76,0.15); color: var(--hotel-gold); padding: 0.3rem 1rem; border-radius: 50px; font-size: 0.8rem; }
+    .candidate-result { display: flex; align-items: center; gap: 1rem; padding: 0.8rem; border-radius: 12px; margin-bottom: 0.6rem; transition: all 0.3s ease; background: rgba(255,255,255,0.03); }
+    .candidate-result:hover { background: rgba(255,255,255,0.06); }
+    .candidate-result .avatar { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(201,168,76,0.2); flex-shrink: 0; }
+    .candidate-result .result-info { flex: 1; }
+    .candidate-result .result-info .cand-name { color: #fff; font-weight: 500; font-size: 0.95rem; }
+    .candidate-result .result-info .cand-program { color: rgba(255,255,255,0.4); font-size: 0.8rem; }
+    .candidate-result .result-stats { text-align: right; flex-shrink: 0; }
+    .candidate-result .result-stats .votes { color: var(--hotel-gold); font-weight: 600; font-size: 1rem; }
+    .candidate-result .result-stats .percent { color: rgba(255,255,255,0.4); font-size: 0.8rem; }
+    .progress-hotel { height: 6px; background: rgba(255,255,255,0.06); border-radius: 10px; overflow: hidden; margin-top: 4px; }
+    .progress-hotel .progress-bar { height: 100%; border-radius: 10px; background: linear-gradient(90deg, var(--hotel-gold), #e8c84c); transition: width 0.5s ease; }
+    .loading-spinner { display: flex; justify-content: center; align-items: center; padding: 4rem 0; color: rgba(255,255,255,0.3); }
+    .loading-spinner i { font-size: 2.5rem; animation: spin 1s linear infinite; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .no-data { text-align: center; padding: 4rem 0; color: rgba(255,255,255,0.2); }
+    .no-data i { font-size: 3rem; display: block; margin-bottom: 1rem; }
+    .top-performer { border-left: 3px solid var(--hotel-gold); background: rgba(201,168,76,0.06); }
+    .vote-none-row { border-left: 3px solid #e74c3c; background: rgba(231,76,60,0.05); }
+    .vote-none-row .votes { color: #e74c3c !important; }
+    .error-help { background: rgba(231,76,60,0.08); border: 1px solid rgba(231,76,60,0.3); border-radius: 12px; padding: 1rem 1.2rem; color: rgba(255,255,255,0.85); font-size: 0.85rem; line-height: 1.5; text-align: left; margin-top: 1rem; }
     .error-help code { background: rgba(0,0,0,0.4); padding: 1px 6px; border-radius: 4px; font-size: 0.85em; }
-
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 10px; }
-    ::-webkit-scrollbar-thumb { background: var(--hotel-gold); border-radius: 10px; }
-
-    @media (max-width: 768px) {
-      body { padding: 1rem; }
-      .hotel-header h1 { font-size: 1.5rem; }
-      .hotel-card { padding: 1.2rem; }
-      .candidate-item { flex-wrap: wrap; gap: 0.8rem; }
-      .candidate-item .candidate-actions { width: 100%; justify-content: flex-end; }
-      .candidate-item .candidate-img { width: 50px; height: 50px; }
-    }
+    .btn-secondary-sm { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #fff; padding: 0.4rem 1rem; border-radius: 8px; font-size: 0.8rem; margin-top: 0.5rem; }
+    .btn-secondary-sm:hover { background: rgba(255,255,255,0.15); color: #fff; }
+    @media (max-width: 768px) { body { padding: 1rem; } .hotel-header h1 { font-size: 1.5rem; } .result-card { padding: 1rem; } .candidate-result { flex-wrap: wrap; } .candidate-result .result-stats { width: 100%; text-align: left; } .candidate-result .avatar { width: 48px; height: 48px; } }
   </style>
 <base target="_blank">
 </head>
 <body>
 
 <div class="hotel-container">
-
   <div class="hotel-header">
     <div class="logo-icon"><i class="bi bi-building"></i></div>
     <h1>CCST <span>Elections</span></h1>
     <div class="gold-divider"></div>
-    <p class="subtitle">Executive Control Suite</p>
+    <p class="subtitle">Live Results Dashboard</p>
+    <div style="margin-top:1rem;"><span class="live-badge"><i class="bi bi-circle-fill"></i>Live</span></div>
   </div>
 
-  <div id="authCard" class="hotel-card">
-    <div class="card-title"><i class="bi bi-shield-lock"></i> Electoral Officer Login</div>
-    <div class="mb-3">
-      <label class="hotel-label"><i class="bi bi-key me-1"></i> Admin Passcode</label>
-      <input type="password" id="adminPassword" class="form-control hotel-input" placeholder="Enter secure passcode">
-    </div>
-    <button onclick="unlockPanel()" class="btn-hotel-primary">
-      <i class="bi bi-unlock me-2"></i>Unlock Admin Panel
-    </button>
-    <div id="authMsg" class="auth-message"></div>
-  </div>
-
-  <div id="adminPanel" class="d-none">
-
-    <div class="hotel-card">
-      <div class="card-title">
-        <i class="bi bi-person-plus"></i>
-        <span id="formTitle">Add Contender</span>
-        <span class="gold-badge ms-auto"><i class="bi bi-check-circle-fill me-1"></i>Authenticated</span>
-      </div>
-
-      <form id="adminForm">
-        <input type="hidden" id="editRowIndex" value="">
-
-        <div class="mb-3">
-          <label class="hotel-label"><i class="bi bi-tag me-1"></i> Position Title</label>
-          <input type="text" id="pos" class="form-control hotel-input" placeholder="e.g. SRC President" required>
-        </div>
-
-        <div class="mb-3">
-          <label class="hotel-label"><i class="bi bi-person me-1"></i> Candidate Full Name</label>
-          <input type="text" id="cName" class="form-control hotel-input" placeholder="e.g. Kwame Mensah" required>
-        </div>
-
-        <div class="mb-3">
-          <label class="hotel-label"><i class="bi bi-mortarboard me-1"></i> Programme of Study</label>
-          <input type="text" id="cProg" class="form-control hotel-input" placeholder="e.g. BSc Nursing" required>
-        </div>
-
-        <div class="mb-4" id="fileUploadGroup">
-          <label class="hotel-label"><i class="bi bi-image me-1"></i> Upload Candidate Picture</label>
-          <input type="file" id="cImgFile" class="form-control hotel-input" accept="image/*">
-        </div>
-
-        <button type="submit" id="submitBtn" class="btn-hotel-primary">
-          <i class="bi bi-plus-circle me-2"></i>Add Candidate
-        </button>
-
-        <button type="button" id="cancelBtn" class="btn-hotel-secondary mt-2 d-none" onclick="resetAdminForm()">
-          <i class="bi bi-x-circle me-2"></i>Cancel Edit
-        </button>
-      </form>
-
-      <div id="adminMsg" class="auth-message"></div>
-    </div>
-
-    <div class="hotel-card">
-      <div class="card-title">
-        <i class="bi bi-list-ul"></i> Manage Candidates
-        <span class="gold-badge ms-auto"><i class="bi bi-people me-1"></i>Directory</span>
-      </div>
-      <div id="candidateList" style="color: rgba(255,255,255,0.6);">Loading candidates...</div>
+  <div id="dashboard">
+    <div class="loading-spinner">
+      <i class="bi bi-hourglass-split"></i>
+      <span style="margin-left:1rem;">Loading results...</span>
     </div>
   </div>
 </div>
 
 <script>
-  // Inline config — no external file needed
   var CONFIG = {
     API_URL: 'https://script.google.com/macros/s/AKfycbzcJ5IxMAUS3xKq3UPDve5wJ8SSVYCkJyy4mvVh2s6HLp9habmuh3ZoZsmpposHrOhTFA/exec',
-    CORS_PROXY: 'https://corsproxy.io/?',
     TIMEOUT_MS: 15000,
     DEBUG: true
   };
-  console.log('✅ Config loaded inline! API_URL:', CONFIG.API_URL);
 </script>
 <script src="api.js"></script>
 <script>
-  let activePasscode = "";
+  let lastData = null;
+  let consecutiveFailures = 0;
 
-  function showError(targetId, message) {
-    const el = document.getElementById(targetId);
-    if (!el) return;
-    const safe = String(message || '').replace(/[<>&]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]));
-    el.innerHTML = '<div class="error-help" style="margin:0.5rem 0;">' + safe.replace(/\n/g,'<br>') + '<div style="margin-top:0.5rem;"><button class="btn-hotel-secondary" onclick="runAdminDiagnostic()" style="width:auto;padding:0.4rem 1rem;font-size:0.8rem;">Test connection</button></div><div id="admin-diag"></div></div>';
+  function escapeHTML(s) { return String(s == null ? '' : s).replace(/[&<"']/g, c => ({'&':'&amp;','<':'&lt;','"':'&quot;',"'":'&#39;'}[c])); }
+  function escapeAttr(s) { return escapeHTML(s).replace(/'/g, '&#39;'); }
+
+  async function fetchTally() {
+    try {
+      const result = await getRealtimeTally();
+      if (result && result.success) {
+        consecutiveFailures = 0;
+        renderResults(result.data);
+      } else {
+        showError(result && result.message);
+      }
+    } catch (e) {
+      showError(e.message || String(e));
+    }
   }
 
-  async function runAdminDiagnostic() {
-    const out = document.getElementById('admin-diag');
+  function showError(message) {
+    consecutiveFailures++;
+    const dash = document.getElementById('dashboard');
+    if (consecutiveFailures >= 3) {
+      if (window._tallyInterval) { clearInterval(window._tallyInterval); window._tallyInterval = setInterval(fetchTally, 60000); }
+    }
+    const safe = String(message || 'Unknown error').replace(/[<>&]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]));
+    dash.innerHTML = '<div class="result-card" style="text-align:center;"><i class="bi bi-exclamation-triangle" style="font-size:3rem;color:#e74c3c;display:block;margin-bottom:1rem;"></i><h5 style="color:#fff;margin-bottom:0.5rem;">Cannot load results</h5><p style="color:rgba(255,255,255,0.7);">' + safe.replace(/\n/g,'<br>') + '</p><div style="display:flex;gap:0.5rem;justify-content:center;flex-wrap:wrap;margin-top:1rem;"><button class="btn-secondary-sm" onclick="fetchTally()"><i class="bi bi-arrow-repeat me-1"></i>Retry now</button><button class="btn-secondary-sm" onclick="runResultsDiag()"><i class="bi bi-wifi me-1"></i>Test connection</button></div><div id="results-diag" style="margin-top:1rem;text-align:left;"></div><div class="error-help" style="margin-top:1rem;"><strong>Common fixes:</strong><ul style="margin:0.5rem 0 0 1.2rem;padding:0;"><li>Apps Script deployment must have <b>"Who has access: Anyone"</b>.</li><li>Confirm <code>config.js</code> has the latest deployment URL.</li><li>If the page is opened from <code>file://</code>, enable a CORS proxy in <code>config.js</code>.</li></ul></div></div>';
+  }
+
+  async function runResultsDiag() {
+    const out = document.getElementById('results-diag');
     if (!out) return;
-    out.innerHTML = '<small style="color:rgba(255,255,255,0.5);">Testing…</small>';
+    out.innerHTML = '<small style="color:rgba(255,255,255,0.5);">Testing...</small>';
     try {
       const r = await pingApi();
-      out.innerHTML = '<pre style="background:rgba(0,0,0,0.4);padding:0.6rem;border-radius:8px;color:#ffd;overflow:auto;margin:0.5rem 0 0 0;font-size:0.75rem;max-height:200px;">' + JSON.stringify(r, null, 2) + '</pre>';
+      out.innerHTML = '<pre style="background:rgba(0,0,0,0.4);padding:0.6rem;border-radius:8px;color:#ffd;overflow:auto;margin:0;font-size:0.75rem;max-height:200px;">' + JSON.stringify(r, null, 2) + '</pre>';
     } catch (e) {
       out.innerHTML = '<small style="color:#e74c3c;">' + (e.message || e) + '</small>';
     }
   }
-  window.runAdminDiagnostic = runAdminDiagnostic;
+  window.runResultsDiag = runResultsDiag;
 
-  async function unlockPanel() {
-    const pwd = document.getElementById('adminPassword').value;
-    const authMsg = document.getElementById('authMsg');
-    authMsg.innerHTML = '<span style="color:rgba(255,255,255,0.5);">Verifying…</span>';
-    try {
-      const result = await checkAdminPassword(pwd);
-      if (result && result.success && result.data === true) {
-        activePasscode = pwd;
-        document.getElementById('authCard').classList.add('d-none');
-        document.getElementById('adminPanel').classList.remove('d-none');
-        loadCandidates();
-      } else {
-        authMsg.innerHTML = '<i class="bi bi-exclamation-triangle-fill me-2"></i>Incorrect admin passcode.';
-        authMsg.className = 'auth-message';
-      }
-    } catch (e) {
-      authMsg.innerHTML = '<i class="bi bi-exclamation-triangle-fill me-2"></i>' + (e.message || String(e));
-      authMsg.className = 'auth-message';
-    }
-  }
-  window.unlockPanel = unlockPanel;
-
-  async function loadCandidates() {
-    const list = document.getElementById('candidateList');
-    list.innerHTML = '<span style="color:rgba(255,255,255,0.5);">Loading…</span>';
-    try {
-      const result = await getAdminCandidateList();
-      if (result && result.success) {
-        renderCandidatesList(result.data);
-      } else {
-        list.innerHTML = '<p style="color:#e74c3c;">Failed to load: ' + (result && result.message) + '</p>' +
-                         '<button class="btn-hotel-secondary" onclick="loadCandidates()" style="width:auto;padding:0.4rem 1rem;font-size:0.85rem;">Retry</button>';
-      }
-    } catch (e) {
-      list.innerHTML = '<p style="color:#e74c3c;">Failed to load: ' + (e.message || e) + '</p>';
-    }
-  }
-  window.loadCandidates = loadCandidates;
-
-  function escapeHTML(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-  function escapeAttr(s) { return escapeHTML(s).replace(/'/g, '&#39;'); }
-
-  function renderCandidatesList(list) {
-    const container = document.getElementById('candidateList');
-    if (!list || list.length === 0) {
-      container.innerHTML = '<p style="text-align:center;padding:2rem 0;"><i class="bi bi-inbox" style="font-size:2rem;display:block;margin-bottom:0.5rem;opacity:0.3;"></i>No candidates registered yet.</p>';
+  function renderResults(tallies) {
+    const dash = document.getElementById('dashboard');
+    lastData = tallies;
+    if (!tallies || Object.keys(tallies).length === 0) {
+      dash.innerHTML = '<div class="no-data"><i class="bi bi-inbox"></i><p>No voting data available yet.</p></div>';
       return;
     }
-
-    const grouped = {};
-    list.forEach(c => { (grouped[c.position] = grouped[c.position] || []).push(c); });
-
-    let html = '';
-    Object.keys(grouped).forEach(pos => {
-      html += `
-        <div style="margin-bottom:1.5rem;">
-          <div class="position-header">
-            <h6><i class="bi bi-trophy me-2" style="color:var(--hotel-gold);"></i>${escapeHTML(pos)}</h6>
-            <span class="position-badge">${grouped[pos].length} candidate${grouped[pos].length > 1 ? 's' : ''}</span>
-          </div>`;
-
-      grouped[pos].forEach(c => {
-        html += `
-          <div class="candidate-item">
-            <div class="candidate-info">
-              <img src="${c.img || 'https://via.placeholder.com/60'}" class="candidate-img" alt="${escapeAttr(c.name)}">
-              <div>
-                <div class="candidate-name">${escapeHTML(c.name)}</div>
-                <div class="candidate-program"><i class="bi bi-book me-1"></i>${escapeHTML(c.program || '')}</div>
-              </div>
-            </div>
-            <div class="candidate-actions">
-              <button class="btn-hotel-warning" onclick='startEdit(${c.rowIndex}, ${JSON.stringify(c.position)}, ${JSON.stringify(c.name)}, ${JSON.stringify(c.program)})'>
-                <i class="bi bi-pencil"></i>
-              </button>
-              <button class="btn-hotel-danger" onclick="removeCandidate(${c.rowIndex})">
-                <i class="bi bi-trash"></i>
-              </button>
-            </div>
-          </div>`;
+    dash.innerHTML = '';
+    Object.keys(tallies).forEach(pos => {
+      const positionData = tallies[pos];
+      const candidates = Object.keys(positionData.candidates || {});
+      let topVotes = 0;
+      candidates.forEach(c => { if ((positionData.candidates[c].count || 0) > topVotes) topVotes = positionData.candidates[c].count; });
+      let html = '<div class="result-card"><div class="result-header"><h3><i class="bi bi-trophy me-2" style="color:var(--hotel-gold);"></i>' + escapeHTML(pos) + '</h3><span class="total-badge"><i class="bi bi-people me-1"></i>' + candidates.length + ' candidate' + (candidates.length > 1 ? 's' : '') + ' &bull; ' + (positionData.totalVotes || 0) + ' votes</span></div>';
+      candidates.forEach(candName => {
+        const cand = positionData.candidates[candName];
+        const percent = positionData.totalVotes > 0 ? ((cand.count / positionData.totalVotes) * 100).toFixed(1) : 0;
+        const isTop = cand.count === topVotes && topVotes > 0;
+        html += '<div class="candidate-result ' + (isTop ? 'top-performer' : '') + '"><img src="' + (cand.img || 'https://via.placeholder.com/64') + '" class="avatar" alt="' + escapeAttr(candName) + '"><div class="result-info"><div class="cand-name">' + escapeHTML(candName) + (isTop ? '<i class="bi bi-crown ms-2" style="color:var(--hotel-gold);"></i>' : '') + '</div><div class="cand-program"><i class="bi bi-book me-1"></i>' + escapeHTML(cand.program || '') + '</div><div class="progress-hotel"><div class="progress-bar" style="width: ' + percent + '%;"></div></div></div><div class="result-stats"><div class="votes">' + cand.count + '</div><div class="percent">' + percent + '%</div></div></div>';
       });
-
-      html += `
-          <div style="text-align:right;margin-top:0.5rem;">
-            <button class="btn-hotel-danger" onclick='removePosition(${JSON.stringify(pos)})' style="padding:0.3rem 1rem;font-size:0.75rem;">
-              <i class="bi bi-folder-minus me-1"></i>Delete Position
-            </button>
-          </div>
-        </div>`;
+      if (positionData.noneCount && positionData.noneCount > 0) {
+        const nonePercent = positionData.totalVotes > 0 ? ((positionData.noneCount / positionData.totalVotes) * 100).toFixed(1) : 0;
+        html += '<div class="candidate-result vote-none-row"><div class="avatar" style="display:flex;align-items:center;justify-content:center;background:rgba(231,76,60,0.1);font-size:1.5rem;color:#e74c3c;"><i class="bi bi-x-circle"></i></div><div class="result-info"><div class="cand-name" style="color:#e74c3c;">Voted None (Abstained)</div><div class="cand-program">Voter chose not to vote</div><div class="progress-hotel"><div class="progress-bar" style="width: ' + nonePercent + '%;background:linear-gradient(90deg,#e74c3c,#c0392b);"></div></div></div><div class="result-stats"><div class="votes">' + positionData.noneCount + '</div><div class="percent">' + nonePercent + '%</div></div></div>';
+      }
+      html += '</div>';
+      dash.innerHTML += html;
     });
-
-    container.innerHTML = html;
   }
 
-  document.getElementById('adminForm').onsubmit = async function (e) {
-    e.preventDefault();
-    const rowIndex = document.getElementById('editRowIndex').value;
-    const position = document.getElementById('pos').value;
-    const name     = document.getElementById('cName').value;
-    const program  = document.getElementById('cProg').value;
-
-    const msg = document.getElementById('adminMsg');
-    msg.innerHTML = '<span style="color:rgba(255,255,255,0.5);">Saving…</span>';
-
-    try {
-      let result;
-      if (rowIndex) {
-        result = await updateCandidate(activePasscode, parseInt(rowIndex), position, name, program);
-      } else {
-        const fileInput = document.getElementById('cImgFile');
-        const file = fileInput.files[0];
-        if (file) {
-          const dataUrl = await new Promise((res, rej) => {
-            const r = new FileReader();
-            r.onload  = () => res(r.result);
-            r.onerror = () => rej(r.error);
-            r.readAsDataURL(file);
-          });
-          result = await addCandidateWithFile(activePasscode, position, name, program, { base64: dataUrl, fileName: file.name });
-        } else {
-          result = await addCandidateWithFile(activePasscode, position, name, program, null);
-        }
-      }
-
-      if (result.success) {
-        msg.innerHTML = '<i class="bi bi-check-circle-fill me-2" style="color:#2ecc71;"></i>' + result.message;
-        msg.className = 'auth-message success-message';
-        resetAdminForm();
-        loadCandidates();
-      } else {
-        showError('adminMsg', result.message);
-        msg.className = 'auth-message';
-      }
-    } catch (err) {
-      showError('adminMsg', err.message || String(err));
-      msg.className = 'auth-message';
-    }
-  };
-
-  function startEdit(rowIndex, pos, name, prog) {
-    document.getElementById('editRowIndex').value = rowIndex;
-    document.getElementById('pos').value = pos;
-    document.getElementById('cName').value = name;
-    document.getElementById('cProg').value = prog;
-    document.getElementById('formTitle').innerText = "Edit Candidate";
-    document.getElementById('submitBtn').innerHTML = '<i class="bi bi-save me-2"></i>Save Changes';
-    document.getElementById('fileUploadGroup').classList.add('d-none');
-    document.getElementById('cancelBtn').classList.remove('d-none');
-  }
-  window.startEdit = startEdit;
-
-  function resetAdminForm() {
-    document.getElementById('adminForm').reset();
-    document.getElementById('editRowIndex').value = '';
-    document.getElementById('formTitle').innerText = "Add Contender";
-    document.getElementById('submitBtn').innerHTML = '<i class="bi bi-plus-circle me-2"></i>Add Candidate';
-    document.getElementById('fileUploadGroup').classList.remove('d-none');
-    document.getElementById('cancelBtn').classList.add('d-none');
-  }
-  window.resetAdminForm = resetAdminForm;
-
-  async function removeCandidate(rowIndex) {
-    if (confirm("Are you sure you want to delete this candidate?")) {
-      try {
-        const result = await deleteCandidate(activePasscode, rowIndex);
-        alert(result.message);
-        if (result.success) loadCandidates();
-      } catch (e) { alert('Error: ' + (e.message || e)); }
-    }
-  }
-  window.removeCandidate = removeCandidate;
-
-  async function removePosition(posName) {
-    if (confirm('Delete entire position "' + posName + '" and all its candidates?')) {
-      try {
-        const result = await deletePosition(activePasscode, posName);
-        alert(result.message);
-        if (result.success) loadCandidates();
-      } catch (e) { alert('Error: ' + (e.message || e)); }
-    }
-  }
-  window.removePosition = removePosition;
+  window._tallyInterval = setInterval(fetchTally, 5000);
+  window.onload = fetchTally;
 </script>
 </body>
 </html>
